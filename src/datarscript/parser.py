@@ -476,7 +476,7 @@ class Parser:
                 # Check if it has quoted key pattern
                 is_dict_like = '"' in s.split(":")[0]
 
-            if not has_operator and is_dict_like:
+            if not has_operator:
                 # Might be a list or a dict; check for colons too
                 if ":" in s:
                     # Dict: key: val, key: val - but respect strings
@@ -816,8 +816,20 @@ class Parser:
     def _safe_split_on(self, text: str, *kw_list):
         """Split on any of the keywords, respecting quoted strings."""
         protected, strings = self._extract_strings(text)
-        kws = sorted(kw_list, key=len, reverse=True)
-        pattern = "|".join(r"\b" + re.escape(k.strip()) + r"\b" for k in kws)
+        # Build regex patterns for each keyword, with special handling for comma
+        pat_with_len = []
+        for kw in kw_list:
+            kw_clean = kw.strip()
+            if kw_clean == ",":
+                # Match comma with optional surrounding whitespace
+                pat = r"\s*,\s*"
+            else:
+                pat = r"\b" + re.escape(kw_clean) + r"\b"
+            pat_with_len.append((len(kw_clean), pat))
+        # Sort by length descending to avoid partial matches of shorter keywords
+        pat_with_len.sort(key=lambda x: x[0], reverse=True)
+        sorted_patterns = [p[1] for p in pat_with_len]
+        pattern = "|".join(sorted_patterns)
         parts = re.split(f"({pattern})", protected, flags=re.IGNORECASE)
         return [self._restore_strings(p.strip(), strings) for p in parts]
 
