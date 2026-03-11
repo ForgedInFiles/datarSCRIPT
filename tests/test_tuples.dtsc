@@ -1,0 +1,105 @@
+# Comprehensive Tuple Tests for DatarScript
+Show "=== Tuple Tests Start ===".
+
+# Basic tuple creation
+Set t1 to a tuple of 1, 2, 3.
+Show "Basic tuple: " plus t1.
+
+# Empty tuple
+Set empty_tuple to a tuple of.
+Show "Empty tuple: " plus empty_tuple.
+
+# Nested tuples
+Set nested_tuple to a tuple of 1, a tuple of 2, 3, 4.
+Show "Nested tuple: " plus nested_tuple.
+
+# Tuple concatenation (same type)
+Set t2 to a tuple of 4, 5, 6.
+Set concat_tuple to t1 plus t2.
+Show "Concatenated tuple: " plus concat_tuple.
+
+# Tuple indexing
+Set first_item to item at 1 in t1.
+Show "First item (1-based): " plus first_item.
+
+Set second_tuple to item at 2 in nested_tuple.
+Show "Second item of nested (tuple): " plus second_tuple.
+
+# Tuple with variables
+Set x to 10.
+Set y to 20.
+Set tuple_vars to a tuple of x, y, "hello".
+Show "Tuple with variables: " plus tuple_vars.
+
+# Tuple with different types
+Set mixed_tuple to a tuple of 1, "string", true, false, 3.14.
+Show "Mixed types tuple: " plus mixed_tuple.
+
+# Tuple equality comparison
+Set t3 to a tuple of 1, 2, 3.
+Set equal_result to t1 is equal to t3.
+Set unequal_result to t1 is equal to t2.
+Show "t1 equals t3: " plus equal_result.
+Show "t1 equals t2: " plus unequal_result.
+
+# Tuple with arithmetic
+Set arith_val to 5 plus 3.
+Set arith_tuple to a tuple of arith_val, arith_val times 2, arith_val divided by 2.
+Show "Arithmetic tuple: " plus arith_tuple.
+
+# Test tuple length (can be inferred from equality with list length?)
+# Tuples work with for-each loops
+Set sum_items to 0.
+For each item in t1, do:
+    Set sum_items to sum_items plus item.
+End for.
+Show "Sum of tuple items: " plus sum_items.
+
+# Logical operations on tuples
+Set bool_tuple to a tuple of true, false, true.
+Set logical_and to item at 1 in bool_tuple and item at 3 in bool_tuple.
+Show "Boolean logic on tuple elements: " plus logical_and.
+
+
+
+
+Show "=== Testing Immutability (should see errors) ===".
+
+
+# Show "Testing Add to tuple:".
+# Add 4 to t1.
+
+
+# Show "Testing Subtract from tuple:".
+# Subtract 1 from t1.
+
+
+# Show "Testing Multiply tuple by 2:".
+# Multiply t1 by 2.
+
+
+# Show "Testing Divide tuple by 2:".
+# Divide t1 by 2.
+
+
+# Show "Testing Remove from tuple:".
+# Remove last item from t1.
+
+# Test tuple with conditionals
+Set nonempty_tuple to a tuple of 42.
+If nonempty_tuple is not equal to a tuple of, then:
+    Show "Non-empty tuple has elements".
+Else:
+    Show "Should not happen".
+End if.
+
+# Empty tuple in conditional
+If empty_tuple equals empty_tuple, then:
+    Show "Empty tuple equals itself".
+End if.
+
+# Test tuple in arithmetic expressions
+Set tuple_length to item at 1 in t1 plus item at 2 in t1 plus item at 3 in t1.
+Show "Item 1 + 2 + 3 = " plus tuple_length.
+
+Show "=== Tuple Tests Complete ===".
