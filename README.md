@@ -1,11 +1,11 @@
-# DatarScript (EnglishScript) 
+# DatarScript 
 
 [![DatarScript](https://img.shields.io/badge/DatarScript-Everything%20in%20English-brightgreen)](https://github.com/datarscript/datarscript)
 [![Version](https://img.shields.io/badge/version-2.0-blue)](.)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB)](.)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **DatarScript (EnglishScript)** - A revolutionary programming language that bridges natural English and machine code, enabling developers to write software using intuitive, readable language.
+> **DatarScript** - A revolutionary programming language that bridges natural English and machine code, enabling developers to write software using intuitive, readable language.
 
 <div align="center">
   <img src="https://via.placeholder.com/800x300/007acc/white?text=DatarScript+-+Programming+in+English" alt="DatarScript Banner" width="100%">
@@ -14,7 +14,7 @@
 
 ## ✨ What is DatarScript?
 
-DatarScript (EnglishScript) eliminates traditional programming syntax barriers by allowing code in natural English. Designed for accessibility and productivity, it supports complex applications while maintaining readability for non-programmers.
+DatarScript eliminates traditional programming syntax barriers by allowing code in natural English. Designed for accessibility and productivity, it supports complex applications while maintaining readability for non-programmers.
 
 ### 🚀 Key Features
 

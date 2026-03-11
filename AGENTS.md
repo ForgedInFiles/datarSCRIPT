@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Project Overview
-DatarScript (EnglishScript) interpreter written in pure Python 3.
+DatarScript interpreter written in pure Python 3.
 - Entry point: `datarscript.py` (executable as script)
 - Tests: `test_*.dtsc` (DatarScript programs) and `test_socket_server.py`
 - Documentation: `datarSCRIPT.md`

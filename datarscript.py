@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DatarScript (EnglishScript) Interpreter v2.0
+DatarScript Interpreter v2.0
 A natural language programming language with proper lexer, parser, and modular builtins.
 
 Usage:

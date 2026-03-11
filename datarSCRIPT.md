@@ -1,8 +1,8 @@
-# DatarScript (EnglishScript): A Natural Language Programming Language Specification
+# DatarScript: A Natural Language Programming Language Specification
 
 ## Executive Summary
 
-DatarScript (EnglishScript) is a revolutionary programming language designed to bridge the gap between human language and machine code. By leveraging natural English syntax and eliminating traditional programming symbols, DatarScript (DatarScript (EnglishScript)) enables developers to write software using intuitive, readable language that requires minimal learning curve.
+DatarScript is a revolutionary programming language designed to bridge the gap between human language and machine code. By leveraging natural English syntax and eliminating traditional programming symbols, DatarScript enables developers to write software using intuitive, readable language that requires minimal learning curve.
 
 ## Table of Contents
 1. [Language Overview](#language-overview)
@@ -38,7 +38,7 @@ The interpreter will automatically detect the file based on content regardless o
 
 ## Language Overview
 
-DatarScript (EnglishScript) is designed for developers who want to focus on problem-solving rather than syntax memorization. The language uses natural English words, commas, and periods exclusively, making it accessible to both programmers and non-programmers.
+DatarScript is designed for developers who want to focus on problem-solving rather than syntax memorization. The language uses natural English words, commas, and periods exclusively, making it accessible to both programmers and non-programners.
 
 ### Key Design Principles
 - **Readability**: Code should be understandable by English speakers
@@ -819,4 +819,4 @@ Show result.
 
 ---
 
-This specification provides a comprehensive foundation for creating DatarScript (EnglishScript), a natural language programming language that prioritizes readability and accessibility while maintaining the power and flexibility needed for real-world software development.
+This specification provides a comprehensive foundation for creating DatarScript, a natural language programming language that prioritizes readability and accessibility while maintaining the power and flexibility needed for real-world software development.
