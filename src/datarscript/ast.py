@@ -154,6 +154,11 @@ class ListExpr(Expr):
 
 
 @dataclass
+class TupleExpr(Expr):
+    elements: list[Expr]
+
+
+@dataclass
 class DictExpr(Expr):
     keys: list[str]
     values: list[Expr]

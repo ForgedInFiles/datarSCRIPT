@@ -215,6 +215,46 @@ class Parser:
         # We'll convert each statement type into appropriate AST classes.
         s = stmt.strip()
 
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # TUPLE PATTERNS - Must be checked FIRST before general patterns
+        # ═══════════════════════════════════════════════════════════════════════════════
+
+        # Pattern: Set <var> to a tuple of <items>
+        m = re.match(r"^set\s+(\w+)\s+to\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # Pattern: Create <var> as a tuple of <items>
+        m = re.match(r"^create\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # Pattern: Make <var> equal to a tuple of <items>
+        m = re.match(r"^make\s+(\w+)\s+equal\s+to\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # Pattern: Define <var> as a tuple of <items>
+        m = re.match(r"^define\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # GENERAL PATTERNS (checked after tuple patterns to avoid conflicts)
+        # ═══════════════════════════════════════════════════════════════════════════════
+
         # Pattern: Set <var> to <expr>
         m = re.match(r"^set\s+(\w+)\s+to\s+(.+)$", s, re.I)
         if m:
@@ -230,7 +270,31 @@ class Parser:
                         func=Variable(name="trim"), args=[Variable(name=trim_var)]
                     ),
                 )
+            # NOT a tuple, parse as normal expression
             return Assign(target=var, value=self._parse_expression(expr_str))
+
+        # First check for tuple patterns BEFORE general set pattern!
+        # Pattern: Create <var> as a tuple of <items>
+        m = re.match(r"^create\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # IF not tuple, then regular set <var> to <expr> processing (trim check above already passed)
+        # ... continue with normal expression parsing
+
+        # Note: Other tuple patterns moved to after their general counterparts
+        # ... (rest of the Pattern: Set <var> to <expr> block remains but after tuple checks)
+
+        # Pattern: Create <var> as a tuple of <items>
+        m = re.match(r"^create\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
 
         # Pattern: Create <var> as <expr>
         m = re.match(r"^create\s+(\w+)\s+as\s+(.+)$", s, re.I)
@@ -252,6 +316,30 @@ class Parser:
             var = m.group(1).lower()
             expr_str = m.group(2)
             return Assign(target=var, value=self._parse_expression(expr_str))
+
+        # Pattern: Create <var> as a tuple of <items>
+        m = re.match(r"^create\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # Pattern: Make <var> equal to a tuple of <items>
+        m = re.match(r"^make\s+(\w+)\s+equal\s+to\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
+
+        # Pattern: Define <var> as a tuple of <items>
+        m = re.match(r"^define\s+(\w+)\s+as\s+a\s+tuple\s+of\s+(.+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            items_str = m.group(2)
+            items = self._parse_expression_list(items_str)
+            return Assign(target=var, value=TupleExpr(elements=items))
 
         # Pattern: Show <expr>
         m = re.match(r"^show\s+(.+)$", s, re.I)
@@ -811,6 +899,13 @@ class Parser:
         clean = re.sub(r",?\s+and\s+", ", ", args_raw, flags=re.I)
         # Split on commas
         parts = [p.strip() for p in re.split(r",\s*", clean) if p.strip()]
+        return [self._parse_expression(p) for p in parts]
+
+    def _parse_expression_list(self, items_str: str) -> list[Expr]:
+        """Parse comma-separated expression list (no 'and' conversion)."""
+        parts = self._safe_split_on(items_str, ",")
+        # Filter out empty/whitespace parts
+        parts = [p.strip() for p in parts if p.strip() and p.strip() != ","]
         return [self._parse_expression(p) for p in parts]
 
     def _safe_split_on(self, text: str, *kw_list):

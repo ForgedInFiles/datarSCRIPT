@@ -225,6 +225,8 @@ class Interpreter:
             return container[idx]
         if isinstance(expr, ListExpr):
             return [self._eval(e, env) for e in expr.elements]
+        if isinstance(expr, TupleExpr):
+            return tuple(self._eval(e, env) for e in expr.elements)
         if isinstance(expr, DictExpr):
             d = {}
             for k, v in zip(expr.keys, expr.values):
@@ -258,6 +260,12 @@ class Interpreter:
     def _apply_binary(self, op: str, left: Any, right: Any, lineno: int | None) -> Any:
         # Arithmetic
         if op == "plus":
+            if isinstance(left, tuple) or isinstance(right, tuple):
+                if not (isinstance(left, tuple) and isinstance(right, tuple)):
+                    raise DatarTypeError(
+                        "Cannot concatenate tuple with non-tuple", lineno=lineno
+                    )
+                return left + right
             if isinstance(left, str) or isinstance(right, str):
                 return str(left) + str(right)
             return left + right
