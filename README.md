@@ -1,7 +1,7 @@
 # DatarScript 
 
 [![DatarScript](https://img.shields.io/badge/DatarScript-Everything%20in%20English-brightgreen)](https://github.com/datarscript/datarscript)
-[![Version](https://img.shields.io/badge/version-2.0-blue)](.)
+[![Version](https://img.shields.io/badge/version-0.0.1--beta.1-orange)](.)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB)](.)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
