@@ -1,0 +1,4 @@
+# Test 10: Dictionaries
+Set person to name: "Alice", age: 30, city: "New York".
+Show "Person dictionary created.".
+Show "Dictionary has name, age, and city.".

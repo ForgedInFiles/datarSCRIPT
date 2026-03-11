@@ -1,0 +1,17 @@
+# Test 14: Factorial function
+Create a function called factorial that takes n:
+    If n is less than 2, then:
+        Return 1.
+    End if.
+    Set result to 1.
+    For i from 2 to n, do:
+        Set result to result times i.
+    End for.
+    Return result.
+End function.
+
+Show "Factorials:".
+For i from 1 to 10, do:
+    Set f to call factorial with i.
+    Show i plus "! = " plus f.
+End for.

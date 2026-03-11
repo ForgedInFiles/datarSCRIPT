@@ -1,0 +1,18 @@
+# Test 5: If/Else statements
+Set score to 85.
+
+If score equals 85, then:
+    Show "Score is 85".
+Else:
+    Show "Score is not 85".
+End if.
+
+# Test nested if
+Set age to 25.
+If age equals 25, then:
+    Show "Age is 25".
+    Set adult to true.
+    If adult, then:
+        Show "Is adult".
+    End if.
+End if.

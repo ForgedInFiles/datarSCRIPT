@@ -1,0 +1,194 @@
+# Snake Game - Classic arcade game
+# Controls: Arrow keys or WASD
+# Eat red food to grow, avoid walls and yourself!
+
+# Game settings
+Set width to 800.
+Set height to 600.
+Set cell to 20.
+
+# Colors
+Set black to "black".
+Set green to "#00ff00".
+Set dark_green to "#008800".
+Set red to "red".
+Set white to "white".
+
+# Initialize
+Call graphics_init with "Snake Game" and width and height.
+Call graphics_set_background with black.
+
+# Game state
+Set snake_x1 to 400.
+Set snake_y1 to 300.
+Set snake_x2 to 380.
+Set snake_y2 to 300.
+Set snake_x3 to 360.
+Set snake_y3 to 300.
+
+Set dir_x to cell.
+Set dir_y to 0.
+Set score to 0.
+Set game_over to 0.
+
+# Place food
+Set food_x to 100.
+Set food_y to 100.
+
+Show "Snake Game Started!".
+Show "Use Arrow Keys or WASD to move.".
+Show "Press Q to quit.".
+
+# Main loop
+Set running to 1.
+While running equals 1, do:
+    # Clear screen
+    Call graphics_clear.
+    
+    # Draw snake
+    Call graphics_draw_rect with snake_x1 and snake_y1 and cell minus 1 and cell minus 1 and dark_green.
+    Call graphics_draw_rect with snake_x2 and snake_y2 and cell minus 1 and cell minus 1 and green.
+    Call graphics_draw_rect with snake_x3 and snake_y3 and cell minus 1 and cell minus 1 and green.
+    
+    # Draw food
+    Call graphics_draw_ellipse with food_x and food_y and cell and cell and red.
+    
+    # Draw score
+    Set score_text to "Score: " plus score.
+    Call graphics_draw_text with score_text and 10 and 30 and 20 and white.
+    
+    # Show frame
+    Call graphics_show.
+    
+    # Get input
+    Set key to call graphics_process_events.
+    
+    # Quit on Q
+    If key equals 81, then:
+        Set running to 0.
+    End if.
+    If key equals 113, then:
+        Set running to 0.
+    End if.
+    
+    If game_over equals 0, then:
+        # Arrow Right
+        If key equals 65363, then:
+            If dir_x equals 0, then:
+                Set dir_x to cell.
+                Set dir_y to 0.
+            End if.
+        End if.
+        # Arrow Left
+        If key equals 65361, then:
+            If dir_x equals 0, then:
+                Set dir_x to 0 minus cell.
+                Set dir_y to 0.
+            End if.
+        End if.
+        # Arrow Up
+        If key equals 65362, then:
+            If dir_y equals 0, then:
+                Set dir_x to 0.
+                Set dir_y to 0 minus cell.
+            End if.
+        End if.
+        # Arrow Down
+        If key equals 65364, then:
+            If dir_y equals 0, then:
+                Set dir_x to 0.
+                Set dir_y to cell.
+            End if.
+        End if.
+        
+        # A key
+        If key equals 97, then:
+            If dir_x equals 0, then:
+                Set dir_x to 0 minus cell.
+                Set dir_y to 0.
+            End if.
+        End if.
+        # D key
+        If key equals 100, then:
+            If dir_x equals 0, then:
+                Set dir_x to cell.
+                Set dir_y to 0.
+            End if.
+        End if.
+        # W key
+        If key equals 119, then:
+            If dir_y equals 0, then:
+                Set dir_x to 0.
+                Set dir_y to 0 minus cell.
+            End if.
+        End if.
+        # S key
+        If key equals 115, then:
+            If dir_y equals 0, then:
+                Set dir_x to 0.
+                Set dir_y to cell.
+            End if.
+        End if.
+        
+        # Move snake
+        Set new_x to snake_x1 plus dir_x.
+        Set new_y to snake_y1 plus dir_y.
+        
+        # Check walls - use simple comparisons
+        If new_x equals 0, then:
+            Set game_over to 1.
+        End if.
+        If new_x equals width, then:
+            Set game_over to 1.
+        End if.
+        If new_y equals 0, then:
+            Set game_over to 1.
+        End if.
+        If new_y equals height, then:
+            Set game_over to 1.
+        End if.
+        
+        # Check self collision
+        If game_over equals 0, then:
+            If new_x equals snake_x1 and new_y equals snake_y1, then:
+                Set game_over to 1.
+            End if.
+            If new_x equals snake_x2 and new_y equals snake_y2, then:
+                Set game_over to 1.
+            End if.
+        End if.
+        
+        If game_over equals 0, then:
+            # Move body
+            Set snake_x3 to snake_x2.
+            Set snake_y3 to snake_y2.
+            Set snake_x2 to snake_x1.
+            Set snake_y2 to snake_y1.
+            Set snake_x1 to new_x.
+            Set snake_y1 to new_y.
+            
+            # Check food
+            If snake_x1 equals food_x and snake_y1 equals food_y, then:
+                Set score to score plus 10.
+                # Move food
+                Set food_x to call random_int with 0 and width divided by cell minus 1.
+                Set food_x to food_x times cell.
+                Set food_y to call random_int with 0 and height divided by cell minus 1.
+                Set food_y to food_y times cell.
+            End if.
+        End if.
+    Else:
+        # Game over screen
+        Call graphics_draw_text with "GAME OVER!" and 300 and 250 and 40 and red.
+        Set final_text to "Final Score: " plus score.
+        Call graphics_draw_text with final_text and 320 and 300 and 24 and white.
+        Call graphics_draw_text with "Press Q to quit" and 320 and 350 and 18 and white.
+    End if.
+    
+    # Delay
+    Call sleep_ms with 100.
+End while.
+
+Show "Game Over!".
+Show "Final Score: " plus score.
+Show "Thanks for playing!".

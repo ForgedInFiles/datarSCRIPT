@@ -1,0 +1,24 @@
+# Test 4: Boolean logic and comparisons
+Set a to 10.
+Set b to 20.
+
+# Test comparisons using equals
+If a equals 10, then:
+    Show "a equals 10".
+End if.
+
+If b equals 20, then:
+    Show "b equals 20".
+End if.
+
+# Test boolean operators
+Set is_true to true.
+Set is_false to false.
+
+If is_true, then:
+    Show "is_true is true".
+End if.
+
+If is_true, then:
+    Show "Condition is true".
+End if.

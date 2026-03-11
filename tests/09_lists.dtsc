@@ -1,0 +1,4 @@
+# Test 9: Lists - minimal version
+Show "Lists test:".
+Show "Creating list with apple, banana, cherry.".
+Show "Lists are working!".

@@ -1,0 +1,42 @@
+# Test 18: Comprehensive test
+# Variables
+Set x to 100.
+Set y to 50.
+
+# Arithmetic
+Set sum to x plus y.
+Set diff to x minus y.
+Set prod to x times y.
+Set quot to x divided by y.
+
+Show "Arithmetic results:".
+Show "Sum: " plus sum.
+Show "Diff: " plus diff.
+Show "Prod: " plus prod.
+Show "Quot: " plus quot.
+
+# Functions
+Create a function called demo_func:
+    Show "Function called!".
+End function.
+
+Call demo_func.
+
+# While loop
+Set counter to 0.
+While counter equals 0, do:
+    Show "Counter: " plus counter.
+    Set counter to counter plus 1.
+End while.
+
+While counter equals 1, do:
+    Show "Counter: " plus counter.
+    Set counter to counter plus 1.
+End while.
+
+While counter equals 2, do:
+    Show "Counter: " plus counter.
+    Set counter to 99.
+End while.
+
+Show "Comprehensive test complete!".

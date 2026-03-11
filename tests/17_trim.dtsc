@@ -1,0 +1,5 @@
+# Test 17: String trim operation
+Set text to "  hello  ".
+Show "Original: " plus text.
+Set trimmed to trim whitespace from text.
+Show "Trimmed: " plus trimmed.

@@ -1,0 +1,18 @@
+# Test 11: Break and Continue
+Show "Break test:".
+For i from 1 to 10, do:
+    If i is equal to 5, then:
+        Show "Breaking at 5".
+        Break.
+    End if.
+    Show i.
+End for.
+
+Show "Continue test:".
+For j from 1 to 5, do:
+    If j is equal to 3, then:
+        Show "Skipping 3".
+        Continue.
+    End if.
+    Show j.
+End for.

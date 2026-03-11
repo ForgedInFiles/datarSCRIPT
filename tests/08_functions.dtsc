@@ -1,0 +1,22 @@
+# Test 8: Functions
+Set global_result to 0.
+
+Create a function called greet_alice:
+    Show "Hello, Alice!".
+End function.
+
+Create a function called greet_bob:
+    Show "Hello, Bob!".
+End function.
+
+# Test function calls
+Call greet_alice.
+Call greet_bob.
+
+# Function that sets a global
+Create a function called set_global:
+    Set global_result to 42.
+End function.
+
+Call set_global.
+Show "Global result: " plus global_result.

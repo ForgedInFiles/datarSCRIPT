@@ -1,0 +1,29 @@
+# Test 6: While loops - simplified
+Set count to 1.
+Show "Counting with while loop:".
+While count equals 1, do:
+    Show count.
+    Set count to count plus 1.
+End while.
+
+While count equals 2, do:
+    Show count.
+    Set count to count plus 1.
+End while.
+
+While count equals 3, do:
+    Show count.
+    Set count to count plus 1.
+End while.
+
+While count equals 4, do:
+    Show count.
+    Set count to count plus 1.
+End while.
+
+While count equals 5, do:
+    Show count.
+    Set count to 99.
+End while.
+
+Show "Loop complete!".

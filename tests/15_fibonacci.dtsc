@@ -1,0 +1,20 @@
+# Test 15: Fibonacci sequence
+Create a function called fibonacci that takes n:
+    If n is less than 2, then:
+        Return n.
+    End if.
+    Set a to 0.
+    Set b to 1.
+    For i from 2 to n, do:
+        Set temp to a plus b.
+        Set a to b.
+        Set b to temp.
+    End for.
+    Return b.
+End function.
+
+Show "Fibonacci sequence (first 10):".
+For i from 0 to 9, do:
+    Set fib to call fibonacci with i.
+    Show "fib(" plus i plus ") = " plus fib.
+End for.

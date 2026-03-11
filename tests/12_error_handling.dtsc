@@ -1,0 +1,13 @@
+# Test 12: Error handling
+Create a function called check_zero that takes v:
+    If v equals 0, then:
+        Raise validation error with message "Value cannot be zero!".
+    End if.
+    Show "Value is valid: " plus v.
+End function.
+
+# Test normal case
+Call check_zero with 5.
+Call check_zero with 10.
+
+Show "Error handling test complete!".

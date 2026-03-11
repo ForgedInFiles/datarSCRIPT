@@ -1,0 +1,29 @@
+# Test 13: FizzBuzz simplified
+Show "FizzBuzz (1-15):".
+For i from 1 to 15, do:
+    Set mod15 to i modulo 15.
+    Set mod3 to i modulo 3.
+    Set mod5 to i modulo 5.
+    If mod15 equals 0, then:
+        Show "FizzBuzz".
+    End if.
+    If mod3 equals 0, then:
+        If mod15 is not equal to 0, then:
+            Show "Fizz".
+        End if.
+    End if.
+    If mod5 equals 0, then:
+        If mod15 is not equal to 0, then:
+            If mod3 is not equal to 0, then:
+                Show "Buzz".
+            End if.
+        End if.
+    End if.
+    If mod15 is not equal to 0, then:
+        If mod3 is not equal to 0, then:
+            If mod5 is not equal to 0, then:
+                Show i.
+            End if.
+        End if.
+    End if.
+End for.

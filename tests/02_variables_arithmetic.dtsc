@@ -1,0 +1,18 @@
+# Test 2: Variables and arithmetic
+Set x to 10.
+Set y to 5.
+Set sum to x plus y.
+Set diff to x minus y.
+Set prod to x times y.
+Set quot to x divided by y.
+
+Show "x = " plus x.
+Show "y = " plus y.
+Show "x + y = " plus sum.
+Show "x - y = " plus diff.
+Show "x * y = " plus prod.
+Show "x / y = " plus quot.
+
+# Test power operation
+Set power to 2 raised to 8.
+Show "2^8 = " plus power.

@@ -1,0 +1,9 @@
+# Test 3: String operations
+Set name to "DatarScript".
+Set greeting to "Welcome to ".
+Set message to greeting plus name plus "!".
+Show message.
+
+# String with special characters
+Set path to "C:/Users/test".
+Show "Path: " plus path.
