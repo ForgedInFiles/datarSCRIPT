@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "DatarScript"
-dynamic = ["version"]
+version = "0.0.1b1"
 description = "A natural language programming language that uses English syntax"
 readme = "README.md"
 license = { file = "LICENSE" }
