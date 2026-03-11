@@ -1,0 +1,6 @@
+For each number from 1 to 5, do:
+    Show "Number: " plus number.
+    If number is equal to 3, then:
+        Show "Found number 3!".
+    End if.
+End for.

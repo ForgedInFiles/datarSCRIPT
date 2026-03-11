@@ -631,10 +631,9 @@ class Parser:
                 ]
             )
             # Also check if it looks like a dict (has "key": pattern with quoted keys)
-            is_dict_like = False
             if ":" in s:
                 # Check if it has quoted key pattern
-                is_dict_like = '"' in s.split(":")[0]
+                _ = '"' in s.split(":")[0]  # ignored, just checking pattern
 
             if not has_operator:
                 # Might be a list or a dict; check for colons too
@@ -1170,10 +1169,14 @@ class Parser:
 
     def _is_block_end(self) -> bool:
         if self.match(TokenType.IDENT) and self.current.value.lower() == "end":
-            # peek ahead for block type?
+            # Check if next token is a valid block type or just "end"
             next_tok = self.peek()
-            if next_tok and next_tok.type == TokenType.IDENT:
-                return True
+            if next_tok:
+                if next_tok.type == TokenType.IDENT:
+                    return True
+                # Also handle case where "end" is followed by DOT
+                if next_tok.type == TokenType.DOT:
+                    return True
         return False
 
     def _expect_end(self, block_type: str):
@@ -1189,46 +1192,12 @@ class Parser:
         self._consume_dot()
 
     def parse_for(self) -> For:
-        # Two forms: "For i from 1 to 10 do:" or "For each item in list do:"
+        # "For each <var> in <iterable>:" OR "For <var> from <start> to <end> do:"
         lineno = self.current.lineno if self.current else 0
         self.expect(TokenType.IDENT)  # 'for'
-        if not self.match(TokenType.IDENT):
-            raise DatarSyntaxError("Expected variable name after for", lineno=lineno)
-        # Check 'each'? optional - "For each item in list" vs "For item from 1 to 10"
-        if self.match(TokenType.IDENT) and self.current.value.lower() == "each":
-            self.advance()  # consume 'each'
-            # variable
-            if not self.match(TokenType.IDENT):
-                raise DatarSyntaxError("Expected variable after 'each'", lineno=lineno)
-            target = self.current.value.lower()
-            self.advance()
-            # Expect 'in'
-            if not self.match(TokenType.IDENT) or self.current.value.lower() != "in":
-                raise DatarSyntaxError("Expected 'in'", lineno=lineno)
-            self.advance()
-            # iterable expression
-            iterable_tokens = []
-            while (
-                not self.match(TokenType.COLON)
-                and not (
-                    self.match(TokenType.IDENT) and self.current.value.lower() == "do"
-                )
-                and not self.match(TokenType.COMMA)
-            ):
-                iterable_tokens.append(
-                    self.current.value if hasattr(self.current, "value") else ""
-                )
-                self.advance()
-            # Consume optional comma
-            if self.match(TokenType.COMMA):
-                self.advance()
-            if self.match(TokenType.IDENT) and self.current.value.lower() == "do":
-                self.advance()
-            self.expect(TokenType.COLON)
-            iterable_str = " ".join(iterable_tokens).strip()
-            iterable = self._parse_expression(iterable_str)
-        else:
-            # Numeric for: "For i from 1 to 10 do:"
+
+        # First check for numeric for loop pattern: "For i from 1 to 10 do:"
+        if self.match(TokenType.IDENT) and self.current.value.lower() != "each":
             target = self.current.value.lower()
             self.advance()
             self.expect(TokenType.IDENT)  # 'from'
@@ -1264,6 +1233,92 @@ class Parser:
             # Build iterable as range(start, end+1) inclusive
             # We'll represent as a Call to builtin_range(start, end)
             iterable = Call(func=Variable(name="range_inclusive"), args=[start, end])
+        else:
+            # Each pattern: "For each number in [1, 2, 3]:" or "For each number from 1 to 5 do:"
+            if self.match(TokenType.IDENT) and self.current.value.lower() == "each":
+                self.advance()
+                if not self.match(TokenType.IDENT):
+                    raise DatarSyntaxError(
+                        "Expected variable after 'each'", lineno=lineno
+                    )
+                target = self.current.value.lower()
+                self.advance()
+
+                # Check for "in" pattern first
+                if self.match(TokenType.IDENT) and self.current.value.lower() == "in":
+                    self.advance()
+                    # iterable expression
+                    iterable_tokens = []
+                    while (
+                        not self.match(TokenType.COLON)
+                        and not (
+                            self.match(TokenType.IDENT)
+                            and self.current.value.lower() == "do"
+                        )
+                        and not self.match(TokenType.COMMA)
+                    ):
+                        iterable_tokens.append(
+                            self.current.value if hasattr(self.current, "value") else ""
+                        )
+                        self.advance()
+                    # Consume optional comma
+                    if self.match(TokenType.COMMA):
+                        self.advance()
+                    if (
+                        self.match(TokenType.IDENT)
+                        and self.current.value.lower() == "do"
+                    ):
+                        self.advance()
+                    self.expect(TokenType.COLON)
+                    iterable_str = " ".join(iterable_tokens).strip()
+                    iterable = self._parse_expression(iterable_str)
+                else:
+                    # Check for "from 1 to 5" pattern as alternative each syntax
+                    self.expect(TokenType.IDENT)  # 'from'
+                    from_tokens = []
+                    while (
+                        not self.match(TokenType.IDENT)
+                        or self.current.value.lower() != "to"
+                    ):
+                        from_tokens.append(
+                            self.current.value if hasattr(self.current, "value") else ""
+                        )
+                        self.advance()
+                    self.expect(TokenType.IDENT)  # 'to'
+                    from_str = " ".join(from_tokens).strip()
+                    start = self._parse_expression(from_str)
+                    to_tokens = []
+                    while (
+                        not self.match(TokenType.COLON)
+                        and not (
+                            self.match(TokenType.IDENT)
+                            and self.current.value.lower() == "do"
+                        )
+                        and not self.match(TokenType.COMMA)
+                    ):
+                        to_tokens.append(
+                            self.current.value if hasattr(self.current, "value") else ""
+                        )
+                        self.advance()
+                    # Consume optional comma
+                    if self.match(TokenType.COMMA):
+                        self.advance()
+                    if (
+                        self.match(TokenType.IDENT)
+                        and self.current.value.lower() == "do"
+                    ):
+                        self.advance()
+                    self.expect(TokenType.COLON)
+                    to_str = " ".join(to_tokens).strip()
+                    end = self._parse_expression(to_str)
+                    # Build iterable as range(start, end+1) inclusive
+                    iterable = Call(
+                        func=Variable(name="range_inclusive"), args=[start, end]
+                    )
+            else:
+                raise DatarSyntaxError(
+                    "Expected 'each' or variable name", lineno=lineno
+                )
         body = []
         while not self._is_block_end():
             body.append(self.parse_statement())
