@@ -600,8 +600,29 @@ Set min_value to get minimum of 5, 10, 15.
 #### Random Numbers
 ```
 Set random_number to generate random number between 1 and 100.
-Set random_choice to select random item from list.
+Set random_choice to pick random item from collection.
 ```
+
+### User Input Functions
+
+#### Reading User Input
+```
+# Basic user input
+Ask for "What is your name?" and store in user_name.
+Ask for "How old are you?" and store in age.
+
+# Using input in calculations
+Ask for "Enter first number:" and store in num1.
+Ask for "Enter second number:" and store in num2.
+Set sum to num1 plus num2.
+Show "Sum: " plus sum.
+```
+
+#### Input Syntax
+- `Ask for "prompt message" and store in variable_name.`
+- Prompts must be enclosed in double quotes
+- Variable receives the user's input as a string
+- Input is read from stdin (keyboard input)
 
 ### Date and Time Functions
 

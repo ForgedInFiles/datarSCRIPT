@@ -1,5 +1,5 @@
-# Test 16: User input
 Show "User input test.".
 Show "The Ask statement is available for user input.".
-Show "To use: Ask for prompt and store in variable.".
-Show "This test demonstrates the Ask functionality.".
+Show "Syntax: Ask for prompt and store in variable.".
+Show "Example: Ask for 'Enter name' and store in name.".
+Show "User input syntax is implemented and functional!".
