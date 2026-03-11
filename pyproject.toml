@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "DatarScript"
-version = "0.0.1b1"
+dynamic = ["version"]
 description = "A natural language programming language that uses English syntax"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -41,12 +41,11 @@ Issues = "https://github.com/ForgedInFiles/datarSCRIPT/issues"
 datarscript = "datarscript:main"
 dtsc = "datarscript:main"
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-packages = ["datarscript"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[options.packages.find]
-where = src
+[tool.setuptools.dynamic]
+version = {file = "src/datarscript/__init__.py"}
 
 [tool.black]
 line-length = 88
