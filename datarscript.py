@@ -35,7 +35,7 @@ def run_file(path: str) -> None:
 
 
 def run_repl() -> None:
-    print("DatarScript REPL (v2.0) – type 'quit.' or Ctrl+C to exit")
+    print("DatarScript REPL (0.0.1-beta.1) – type 'quit.' or Ctrl+C to exit")
     interp = Interpreter()
     buf = []
     while True:
@@ -70,7 +70,7 @@ def main() -> None:
         print(__doc__)
         return
     if argv[0] in ("-v", "--version"):
-        print("DatarScript Interpreter v2.0")
+        print("DatarScript Interpreter 0.0.1-beta.1")
         return
     run_file(argv[0])
 
