@@ -1,10 +1,31 @@
-# Test 19: Random Number Generation
-Show "Random number generation test:".
+Show "Natural language random generation test:".
 
+Show "Traditional Syntax:".
 Set random_float to call random.
 Show "Random float (0-1): " plus random_float.
-
 Set random_int to call randint with 1, 100.
 Show "Random integer (1-100): " plus random_int.
 
-Show "Random functions are working!".
+Show "Natural Language Syntax:".
+
+Set random_number to generate a random number between 1 and 100.
+Show "Core syntax: random number between 1 and 100: " plus random_number.
+
+Set dice_roll to roll a random number from 1 to 6.
+Show "Dice roll from 1 to 6: " plus dice_roll.
+
+Set random_val to generate a random value between 10 and 50.
+Show "Random value between 10 and 50: " plus random_val.
+
+Set lucky_number to pick a random integer between 100 and 999.
+Show "Lucky number between 100 and 999: " plus lucky_number.
+
+Set min_val to 5.
+Set max_val to 15.
+Set range_random to generate a random number between min_val and max_val.
+Show "Range random between variables: " plus range_random.
+
+Set expr_random to roll a random number from min_val times 2 to max_val plus 10.
+Show "Expression random: min_val*2 to max_val+10: " plus expr_random.
+
+Show "Natural language random functions are working!".

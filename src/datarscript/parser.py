@@ -252,7 +252,79 @@ class Parser:
             return Assign(target=var, value=TupleExpr(elements=items))
 
         # ═══════════════════════════════════════════════════════════════════════════════
-        # GENERAL PATTERNS (checked after tuple patterns to avoid conflicts)
+        # NATURAL LANGUAGE RANDOM SYNTAX PATTERNS
+        # ═══════════════════════════════════════════════════════════════════════════════
+
+        # Pattern: Set <var> to generate a random number between <min> and <max>
+        m = re.match(
+            r"^set\s+(\w+)\s+to\s+generate\s+a\s+random\s+number\s+between\s+(.+)\s+and\s+(.+)$",
+            s,
+            re.I,
+        )
+        if m:
+            var = m.group(1).lower()
+            min_str = m.group(2).strip()
+            max_str = m.group(3).strip()
+            min_expr = self._parse_expression(min_str)
+            max_expr = self._parse_expression(max_str)
+            return Assign(
+                target=var,
+                value=Call(func=Variable(name="randint"), args=[min_expr, max_expr]),
+            )
+
+        # Pattern: Set <var> to roll a random number from <min> to <max>
+        m = re.match(
+            r"^set\s+(\w+)\s+to\s+roll\s+a\s+random\s+number\s+from\s+(.+)\s+to\s+(.+)$",
+            s,
+            re.I,
+        )
+        if m:
+            var = m.group(1).lower()
+            min_str = m.group(2).strip()
+            max_str = m.group(3).strip()
+            min_expr = self._parse_expression(min_str)
+            max_expr = self._parse_expression(max_str)
+            return Assign(
+                target=var,
+                value=Call(func=Variable(name="randint"), args=[min_expr, max_expr]),
+            )
+
+        # Pattern: Set <var> to generate a random value between <min> and <max>
+        m = re.match(
+            r"^set\s+(\w+)\s+to\s+generate\s+a\s+random\s+value\s+between\s+(.+)\s+and\s+(.+)$",
+            s,
+            re.I,
+        )
+        if m:
+            var = m.group(1).lower()
+            min_str = m.group(2).strip()
+            max_str = m.group(3).strip()
+            min_expr = self._parse_expression(min_str)
+            max_expr = self._parse_expression(max_str)
+            return Assign(
+                target=var,
+                value=Call(func=Variable(name="randint"), args=[min_expr, max_expr]),
+            )
+
+        # Pattern: Set <var> to pick a random integer between <min> and <max>
+        m = re.match(
+            r"^set\s+(\w+)\s+to\s+pick\s+a\s+random\s+integer\s+between\s+(.+)\s+and\s+(.+)$",
+            s,
+            re.I,
+        )
+        if m:
+            var = m.group(1).lower()
+            min_str = m.group(2).strip()
+            max_str = m.group(3).strip()
+            min_expr = self._parse_expression(min_str)
+            max_expr = self._parse_expression(max_str)
+            return Assign(
+                target=var,
+                value=Call(func=Variable(name="randint"), args=[min_expr, max_expr]),
+            )
+
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # GENERAL PATTERNS (checked after natural language patterns to avoid conflicts)
         # ═══════════════════════════════════════════════════════════════════════════════
 
         # Pattern: Set <var> to <expr>
