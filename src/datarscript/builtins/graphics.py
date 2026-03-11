@@ -117,12 +117,7 @@ def rgb_color(r: int, g: int, b: int) -> str:
     return f"#{int(r):02x}{int(g):02x}{int(b):02x}"
 
 
-@BuiltinRegistry.register("random_int")
-def random_int(min_val: int, max_val: int) -> int:
-    """Generate a random integer between min and max (inclusive)."""
-    import random
-
-    return random.randint(int(min_val), int(max_val))
+# Removed random_int - there's already randint in math_stdlib
 
 
 @BuiltinRegistry.register("length")

@@ -1,0 +1,10 @@
+# Test 19: Random Number Generation
+Show "Random number generation test:".
+
+Set random_float to call random.
+Show "Random float (0-1): " plus random_float.
+
+Set random_int to call randint with 1, 100.
+Show "Random integer (1-100): " plus random_int.
+
+Show "Random functions are working!".
