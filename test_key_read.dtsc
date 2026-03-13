@@ -1,6 +1,6 @@
 clear_screen().
 print_raw("Press any key (q to quit): ").
-set key to key_read.
+set key to key_read().
 print_raw("You pressed: ").
 print_raw(key).
 print_raw("\n").

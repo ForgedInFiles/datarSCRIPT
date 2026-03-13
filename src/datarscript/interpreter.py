@@ -172,6 +172,8 @@ class Interpreter:
         if isinstance(expr, Variable):
             name = expr.name
             if name in self._builtin_functions:
+                # For builtins, we need to return a callable wrapper that will
+                # be called when the Call node evaluates it
                 return self._builtin_functions[name]
             return env.get(name)
         if isinstance(expr, Binary):

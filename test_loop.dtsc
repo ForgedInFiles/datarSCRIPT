@@ -1,0 +1,14 @@
+While True, do:
+	clear_screen().
+	print_raw("Press any key (q to quit): ").
+	set key to key_read().
+	print_raw("You pressed: ").
+	Show key.
+	print_raw("\n").
+	if key is equal to "q", then:
+		print_raw("Quitting...\n").
+	else:
+		print_raw("Not quitting.\n").
+	end
+	wait(100).
+End while.
