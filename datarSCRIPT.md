@@ -125,10 +125,37 @@ The precedence levels (from highest to lowest) are:
 6. **Comparisons**: `is equal to`, `is not equal to`, `differs from`, `is greater than`, `is greater than or equal to`, `is at least`, `is less than`, `is less than or equal to`, `is at most`, `equals`, `is not`
 7. **Logical AND**: `and`
 8. **Logical OR**: `or`
+9. **Pipe Operator**: `|>` (left-associative)
 
 **Precedence Visualization:**
 ```
-Highest → or → and → comparisons → + - → × ÷ % → ^ → not → parentheses ← Lowest
+Highest → | → or → and → comparisons → + - → × ÷ % → ^ → not → parentheses ← Lowest
+```
+
+### Pipe Operator
+
+The pipe operator (`|>`) takes the value on its left and passes it as the first argument to the function on its right. This enables a readable, left-to-right flow of data transformation.
+
+**Syntax:**
+```
+value |> function_name
+value |> function_name with arg1, arg2
+```
+
+**Examples:**
+```
+# Basic usage
+Set name to "alice".
+Set capitalized_name to name |> convert to uppercase.
+
+# With additional arguments
+Set result to numbers |> sort in ascending order.
+
+# Chaining multiple operations
+Set processed_data to raw_data
+    |> trim whitespace
+    |> convert to lowercase
+    |> replace "test" with "production".
 ```
 
 ### Arithmetic Operations
@@ -623,6 +650,31 @@ Show "Sum: " plus sum.
 - Prompts must be enclosed in double quotes
 - Variable receives the user's input as a string
 - Input is read from stdin (keyboard input)
+
+### Terminal and Console Functions
+These functions control the terminal/console output and input.
+
+| Function | Description |
+|----------|-------------|
+| `key_read()` | Reads a single key press and returns it as a string. |
+| `clear_screen()` | Clears the entire screen and returns cursor to home position (1,1). |
+| `sleep_ms(ms)` | Sleeps for specified milliseconds. |
+| `wait(ms)` | Alias for `sleep_ms`. Waits for specified milliseconds. |
+| `ansi_color(color)` | Returns ANSI color code by name. |
+| `ansi_reset()` | Resets all ANSI formatting. |
+| `cursor_hide()` | Hides cursor. |
+| `cursor_show()` | Shows cursor. |
+| `cursor_up(lines)` | Moves cursor up N lines. |
+| `cursor_down(lines)` | Moves cursor down N lines. |
+| `cursor_right(cols)` | Moves cursor right N columns. |
+| `cursor_left(cols)` | Moves cursor left N columns. |
+| `cursor_goto(row, col)` | Moves cursor to specific row and column (1-based). |
+| `clear_line()` | Clears current line. |
+| `clear_to_end()` | Clears from cursor to end of line. |
+| `print_raw(text)` | Prints text without adding newline. |
+| `flush_output()` | Flushes stdout. |
+| `get_terminal_size()` | Gets terminal size as {width, height}. |
+| `is_tty()` | Checks if stdout is a TTY. |
 
 ### Date and Time Functions
 

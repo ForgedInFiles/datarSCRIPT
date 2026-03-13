@@ -123,7 +123,7 @@ End for.
 - **Networking**: `fetch`, `post`, JSON parsing
 - **System**: `input`, `print`, `trim`, `exit`
 - **Graphics** (Qt): Drawing, events, animations
-- **Terminal**: ANSI colors, cursor control, progress bars
+- **Terminal**: ANSI colors, cursor control, progress bars, `key_read`, `clear_screen`, `sleep_ms`, `wait`
 
 ### Complete Feature Set
 ✅ Variables & Assignment (`Set x to 10.`)  
