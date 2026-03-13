@@ -1,0 +1,4 @@
+clear_screen().
+print_raw("Hello").
+wait(1000).
+print_raw("World").

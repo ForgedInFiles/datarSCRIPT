@@ -68,6 +68,8 @@ class Lexer:
         ("LBRACE", r"{"),
         ("RBRACE", r"}"),
         ("HYPHEN", r"-"),
+        ("PIPE", r"\|"),
+        ("GT", r">"),
         ("IDENT", r"[a-zA-Z_][a-zA-Z0-9_]*"),
     ]
 
@@ -115,7 +117,9 @@ class Lexer:
             elif kind == "IDENT":
                 self.tokens.append(Token(TokenType.IDENT, value.lower(), self.lineno))
             else:
-                self.tokens.append(Token(kind, value, self.lineno))
+                # Handle potential None value for kind (though it should never happen with our named groups)
+                token_type = kind if kind is not None else "UNKNOWN"
+                self.tokens.append(Token(token_type, value, self.lineno))
             self.pos = m.end()
         self.tokens.append(Token(TokenType.EOF, "", self.lineno))
 

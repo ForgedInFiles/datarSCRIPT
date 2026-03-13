@@ -286,6 +286,11 @@ class Interpreter:
             return self._truthy(left) and self._truthy(right)
         if op == "or":
             return self._truthy(left) or self._truthy(right)
+        # Pipe: left |> right  =>  right(left)
+        if op == "pipegt":
+            if not callable(right):
+                raise DatarError("Right side of pipe must be a function", lineno=lineno)
+            return right(left)
         raise DatarRuntimeError(f"Unknown binary operator: {op}")
 
     def _apply_compare(

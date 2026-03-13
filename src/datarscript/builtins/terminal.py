@@ -104,7 +104,7 @@ def cursor_goto(row: int, col: int) -> str:
 
 @BuiltinRegistry.register("clear_screen")
 def clear_screen() -> str:
-    """Clear the entire screen."""
+    """Clear the entire screen and return cursor to home position (1, 1)."""
     return "\u001b[2J\u001b[H"
 
 
@@ -140,6 +140,44 @@ def sleep_ms(ms: int) -> None:
     if not isinstance(ms, (int, float)):
         raise DatarError("sleep_ms: ms must be a number")
     time.sleep(ms / 1000.0)
+
+
+@BuiltinRegistry.register("wait")
+def wait(ms: int) -> None:
+    """Wait for specified milliseconds (alias for sleep_ms)."""
+    sleep_ms(ms)
+
+
+@BuiltinRegistry.register("key_read")
+def key_read() -> str:
+    """Read a single key press and return it as a string.
+    Note: For special keys (like arrow keys), multiple bytes may be returned.
+    """
+    if not sys.stdin.isatty():
+        raise DatarError("key_read: not a TTY")
+    if os.name == "nt":
+        import msvcrt
+
+        key = msvcrt.getch()
+        if key in (b"\x00", b"\xe0"):
+            key += msvcrt.getch()
+        return key.decode("latin-1")
+    else:
+        import termios
+        import tty
+        import select
+
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+            if ch == "\x1b":  # escape sequence
+                if select.select([sys.stdin], [], [], 0) == ([sys.stdin], [], []):
+                    ch += sys.stdin.read(2)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
 
 
 @BuiltinRegistry.register("get_terminal_size")

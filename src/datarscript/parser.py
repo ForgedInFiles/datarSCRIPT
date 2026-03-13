@@ -540,7 +540,9 @@ class Parser:
         m = re.match(r"^trim\s+whitespace\s+from\s+(\w+)$", s, re.I)
         if m:
             var = m.group(1).lower()
-            return Call(func=Variable(name="trim"), args=[Variable(name=var)])
+            return ExprStmt(
+                expr=Call(func=Variable(name="trim"), args=[Variable(name=var)])
+            )
 
         # Pattern: Raise <error type> error with message <msg>
         m = re.match(
@@ -736,6 +738,35 @@ class Parser:
                 right = self._parse_arithmetic_expr(filtered_parts[1])
                 return Compare(left=left, op=op, right=right)
 
+        # Pipe operator (left-associative, lower precedence than comparisons)
+        if "|>" in s:
+            # We need to split on "|>" but not inside strings
+            parts = []
+            current = []
+            in_string = False
+            i = 0
+            while i < len(s):
+                if s[i] == '"':
+                    in_string = not in_string
+                    current.append(s[i])
+                    i += 1
+                elif i < len(s) - 1 and s[i : i + 2] == "|>" and not in_string:
+                    parts.append("".join(current).strip())
+                    current = []
+                    i += 2  # skip the two characters
+                else:
+                    current.append(s[i])
+                    i += 1
+            if current:
+                parts.append("".join(current).strip())
+            parts = [p for p in parts if p]
+            if len(parts) > 1:
+                expr = self._parse_binary_expr(parts[0])
+                for part in parts[1:]:
+                    rhs = self._parse_binary_expr(part)
+                    expr = Binary(left=expr, op="pipegt", right=rhs)
+                return expr
+
         # Equality as fallback?
         # Arithmetic
         return self._parse_arithmetic_expr(s)
@@ -866,6 +897,16 @@ class Parser:
 
     def _parse_atom(self, s: str) -> Expr:
         s = s.strip()
+        # Function call: <func_name>(<args>)
+        m = re.match(r"^([a-zA-Z_][a-zA-Z0-9_]*)\s*\(\s*(.*)\s*\)$", s)
+        if m:
+            func_name = m.group(1)
+            args_str = m.group(2)
+            args = []
+            if args_str.strip():
+                args = self._parse_expression_list(args_str)
+            return Call(func=Variable(name=func_name.lower()), args=args)
+
         # Variable reference
         if re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", s):
             return Variable(name=s.lower())
@@ -923,7 +964,7 @@ class Parser:
 
         # Dict literal: key: val, key: val
         if ":" in s:
-            parts = re.split(r",\s*", s)
+            parts = self._safe_split_on(s, ",")
             keys = []
             values = []
             for part in parts:

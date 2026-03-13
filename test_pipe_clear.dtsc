@@ -1,0 +1,3 @@
+# Test for clear_screen and pipe operator
+clear_screen() |> print_raw.
+print_raw("Hello, World!") |> print_raw.
