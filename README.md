@@ -123,7 +123,7 @@ End for.
 - **Networking**: `fetch`, `post`, JSON parsing
 - **System**: `input`, `print`, `trim`, `exit`
 - **Graphics** (Qt): Drawing, events, animations
-- **Terminal**: ANSI colors, cursor control, progress bars, `key_read`, `clear_screen`, `sleep_ms`, `wait`
+- **Terminal (plain English)**: `Clearscreen.` (clears viewport + scrollback), `Newscreen.` (enter alt buffer), `Start screen.` / `Stop screen.` (alt buffer + cursor hide/show + echo off/on), `Cursorhome.` (move to 1,1), `Clearbelow.` (clear to end of screen), `Hide cursor.` / `Unhide cursor.`, progress bars, `key_read`, `sleep_ms`, `wait`
 
 ### Complete Feature Set
 ✅ Variables & Assignment (`Set x to 10.`)  

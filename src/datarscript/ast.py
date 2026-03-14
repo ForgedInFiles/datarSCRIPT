@@ -88,6 +88,13 @@ class Continue(Stmt):
     pass
 
 
+@dataclass
+class Match(Stmt):
+    subject: Expr
+    cases: list  # list of (Expr, list[Stmt]) tuples
+    otherwise_body: list[Stmt] | None = None
+
+
 # Expression nodes
 class Expr:
     pass

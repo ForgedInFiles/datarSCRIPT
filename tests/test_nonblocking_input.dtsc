@@ -1,0 +1,79 @@
+Set running to True.
+Set frame to 0.
+Set last_key to "none".
+While running, do:
+	Clearscreen.
+	print_raw("=== Non-Blocking Input Test ===\n").
+	print_raw("The loop keeps running whether or not you press anything.\n").
+	print_raw("Press q to quit.\n\n").
+		print_raw("Frame: ").
+		Show frame.
+		print_raw("\n").
+		print_raw("Last key: ").
+	print_raw(key_repr(last_key)).
+	print_raw("\n").
+	Set key to listen for keys.
+	if key is not nothing, then:
+		Match key:
+			When "q":
+				Set running to False.
+			When Space:
+				Set last_key to "Space".
+			When Enter:
+				Set last_key to "Enter".
+			When UpArrow:
+				Set last_key to "Up Arrow".
+			When DownArrow:
+				Set last_key to "Down Arrow".
+			When LeftArrow:
+				Set last_key to "Left Arrow".
+			When RightArrow:
+				Set last_key to "Right Arrow".
+			When Escape:
+				Set last_key to "Escape".
+			When Home:
+				Set last_key to "Home".
+			When End:
+				Set last_key to "End".
+			When PageUp:
+				Set last_key to "Page Up".
+			When PageDown:
+				Set last_key to "Page Down".
+			When Insert:
+				Set last_key to "Insert".
+			When Delete:
+				Set last_key to "Delete".
+			When Tab:
+				Set last_key to "Tab".
+			When F1:
+				Set last_key to "F1".
+			When F2:
+				Set last_key to "F2".
+			When F3:
+				Set last_key to "F3".
+			When F4:
+				Set last_key to "F4".
+			When F5:
+				Set last_key to "F5".
+			When F6:
+				Set last_key to "F6".
+			When F7:
+				Set last_key to "F7".
+			When F8:
+				Set last_key to "F8".
+			When F9:
+				Set last_key to "F9".
+			When F10:
+				Set last_key to "F10".
+			When F11:
+				Set last_key to "F11".
+			When F12:
+				Set last_key to "F12".
+			Otherwise:
+				Set last_key to key_repr(key).
+		End match.
+	End if.
+	Add 1 to frame.
+	wait(100).
+End while.
+print_raw("\nGoodbye!\n").

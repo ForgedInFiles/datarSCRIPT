@@ -45,13 +45,23 @@ def builtin_exit(code: int = 0) -> None:
 
 @BuiltinRegistry.register("print")
 def builtin_print(*args, sep: str = " ", end: str = "\n") -> str:
-    # We'll return the concatenated string; the interpreter handles output.
-    # Actually we should print to stdout here; but for flexibility, return string and let main print.
-    # We'll print directly so that it works with our interpreter's print capturing? Not needed.
-    # We'll directly print and return the string.
     output = sep.join(str(a) for a in args) + end
-    print(output, end="")
+    print(output, end="", flush=True)
     return output
+
+
+@BuiltinRegistry.register("key_repr")
+def key_repr(s) -> str:
+    """Return a safe printable representation of any string (shows escape sequences)."""
+    return repr(s)
+
+
+@BuiltinRegistry.register("key_codes")
+def key_codes(s) -> str:
+    """Return the hex byte codes of a string, space-separated. Useful for debugging key presses."""
+    if not isinstance(s, str):
+        return "(not a string)"
+    return " ".join(f"{ord(c):02x}" for c in s)
 
 
 @BuiltinRegistry.register("chr")

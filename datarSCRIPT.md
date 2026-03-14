@@ -21,6 +21,7 @@ DatarScript is a revolutionary programming language designed to bridge the gap b
 14. [Implementation Guidelines](#implementation-guidelines)
 15. [Success Criteria](#success-criteria)
 16. [Example Programs](#example-programs)
+17. [Terminal Control (Plain English)](#terminal-control-plain-english)
 
 
 ## File Conventions and Execution
@@ -866,6 +867,18 @@ End function.
 Set result to call process_file with "input.txt" and "output.txt".
 Show result.
 ```
+
+## Terminal Control (Plain English)
+
+For full-screen terminal apps, keep everything in natural language:
+
+- `Start screen.` — enter the alternate screen buffer, hide the cursor, disable echo/canonical input, and clear once.
+- `Stop screen.` — leave the alternate buffer, show the cursor, and restore terminal settings (also runs on interpreter exit).
+- `Clearscreen.` — clear the viewport and scrollback, then move the cursor home.
+- `Newscreen.` — enter the alternate buffer without changing echo/cursor state.
+- `Cursorhome.` — move the cursor to row 1, column 1.
+- `Clearbelow.` — clear from the cursor to the end of the screen.
+- `Hide cursor.` / `Unhide cursor.` — explicit cursor control (automatically restored on exit).
 
 ## Future Enhancements
 

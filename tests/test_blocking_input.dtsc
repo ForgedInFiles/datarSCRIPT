@@ -1,0 +1,79 @@
+Set running to True.
+While running, do:
+	Clearscreen.
+	print_raw("=== Blocking Input Test ===\n").
+	print_raw("The loop halts here until you press a key.\n").
+	print_raw("Press q to quit, arrows and space also work.\n\n").
+	print_raw("Waiting...\n").
+	Set key to wait on keys.
+	Clearscreen.
+		print_raw("=== Blocking Input Test ===\n\n").
+		print_raw("Key received!\n").
+		Match key:
+			When "q":
+				print_raw("Quitting.\n").
+				Set running to False.
+			When Space:
+				print_raw("You pressed: Spacebar\n").
+			When Enter:
+				print_raw("You pressed: Enter\n").
+			When UpArrow:
+				print_raw("You pressed: Up Arrow\n").
+			When DownArrow:
+				print_raw("You pressed: Down Arrow\n").
+			When LeftArrow:
+				print_raw("You pressed: Left Arrow\n").
+			When RightArrow:
+				print_raw("You pressed: Right Arrow\n").
+			When Home:
+				print_raw("You pressed: Home\n").
+			When End:
+				print_raw("You pressed: End\n").
+			When PageUp:
+				print_raw("You pressed: Page Up\n").
+			When PageDown:
+				print_raw("You pressed: Page Down\n").
+			When Insert:
+				print_raw("You pressed: Insert\n").
+			When Delete:
+				print_raw("You pressed: Delete\n").
+			When Tab:
+				print_raw("You pressed: Tab\n").
+			When Backspace:
+				print_raw("You pressed: Backspace\n").
+			When Backspace2:
+				print_raw("You pressed: Backspace (Ctrl-H)\n").
+			When F1:
+				print_raw("You pressed: F1\n").
+			When F2:
+				print_raw("You pressed: F2\n").
+			When F3:
+				print_raw("You pressed: F3\n").
+			When F4:
+				print_raw("You pressed: F4\n").
+			When F5:
+				print_raw("You pressed: F5\n").
+			When F6:
+				print_raw("You pressed: F6\n").
+			When F7:
+				print_raw("You pressed: F7\n").
+			When F8:
+				print_raw("You pressed: F8\n").
+			When F9:
+				print_raw("You pressed: F9\n").
+			When F10:
+				print_raw("You pressed: F10\n").
+			When F11:
+				print_raw("You pressed: F11\n").
+			When F12:
+				print_raw("You pressed: F12\n").
+			When Escape:
+				print_raw("You pressed: Escape\n").
+			Otherwise:
+				print_raw("You pressed: ").
+				Show key_repr(key).
+				print_raw("\n").
+		End match.
+	wait(1500).
+End while.
+print_raw("\nGoodbye!\n").

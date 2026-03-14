@@ -1,0 +1,61 @@
+Set running to True.
+While running, do:
+	Clearscreen.
+	print_raw("=== Key Debug Tool ===\n").
+	print_raw("Press any key to see its value. Press Escape to quit.\n\n").
+	print_raw("Waiting...\n").
+	Set key to wait on keys.
+	Clearscreen.
+	print_raw("=== Key Debug Tool ===\n\n").
+	print_raw("Repr  : ").
+	Show key_repr(key).
+	print_raw("Codes : ").
+	Show key_codes(key).
+	print_raw("\n").
+	Match key:
+		When Escape:
+			print_raw("Named: Escape  (quitting)\n").
+			Set running to False.
+		When Enter:
+			print_raw("Named: Enter\n").
+		When Newline:
+			print_raw("Named: Newline\n").
+		When Space:
+			print_raw("Named: Space\n").
+		When Tab:
+			print_raw("Named: Tab\n").
+		When Backspace:
+			print_raw("Named: Backspace\n").
+		When UpArrow:
+			print_raw("Named: UpArrow\n").
+		When DownArrow:
+			print_raw("Named: DownArrow\n").
+		When LeftArrow:
+			print_raw("Named: LeftArrow\n").
+		When RightArrow:
+			print_raw("Named: RightArrow\n").
+		When Home:
+			print_raw("Named: Home\n").
+		When End:
+			print_raw("Named: End\n").
+		When PageUp:
+			print_raw("Named: PageUp\n").
+		When PageDown:
+			print_raw("Named: PageDown\n").
+		When Delete:
+			print_raw("Named: Delete\n").
+		When F1:
+			print_raw("Named: F1\n").
+		When F2:
+			print_raw("Named: F2\n").
+		When F3:
+			print_raw("Named: F3\n").
+		When F4:
+			print_raw("Named: F4\n").
+		Otherwise:
+			print_raw("No named match.\n").
+	End match.
+	print_raw("\nPress any key to continue...\n").
+	Set dummy to wait on keys.
+End while.
+print_raw("\nGoodbye!\n").

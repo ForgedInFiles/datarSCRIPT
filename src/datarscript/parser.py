@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Optional
 
+import ast as _ast
 import re
 from .lexer import Token, TokenType
 from .errors import DatarSyntaxError
@@ -101,6 +102,7 @@ class Parser:
                 "try",
                 "break",
                 "continue",
+                "match",
             ):
                 return self._parse_compound_or_simple()
             else:
@@ -144,6 +146,8 @@ class Parser:
                 else:
                     self.pos = saved
                     return self._parse_simple_statement()
+            elif val == "match":
+                return self.parse_match()
             elif val == "try":
                 return self.parse_try()
             elif val in ("set", "make", "define"):
@@ -536,6 +540,15 @@ class Parser:
                 )
             )
 
+        # Pattern: Hide/Unhide cursor (must come before generic Show patterns)
+        if s.lower() in ("hide cursor", "hide the cursor"):
+            return ExprStmt(expr=Call(func=Variable(name="cursor_hide"), args=[]))
+        if s.lower() in ("unhide cursor",):
+            return ExprStmt(expr=Call(func=Variable(name="cursor_show"), args=[]))
+        if s.lower() in ("cursorhome", "cursorhome."):
+            return ExprStmt(expr=Call(func=Variable(name="cursorhome"), args=[]))
+        if s.lower() in ("clearbelow",):
+            return ExprStmt(expr=Call(func=Variable(name="clearbelow"), args=[]))
         # Pattern: Trim whitespace from <var>
         m = re.match(r"^trim\s+whitespace\s+from\s+(\w+)$", s, re.I)
         if m:
@@ -543,7 +556,6 @@ class Parser:
             return ExprStmt(
                 expr=Call(func=Variable(name="trim"), args=[Variable(name=var)])
             )
-
         # Pattern: Raise <error type> error with message <msg>
         m = re.match(
             r"^raise\s+(.+?)\s+error\s+with\s+message\s+\"([^\"]+)\"$", s, re.I
@@ -557,6 +569,16 @@ class Parser:
                     args=[Literal(error_type), Literal(message)],
                 )
             )
+
+        # Pattern: Clearscreen (natural language alias for clearscreen builtin)
+        if s.lower() == "clearscreen":
+            return ExprStmt(expr=Call(func=Variable(name="clearscreen"), args=[]))
+        if s.lower() in ("newscreen",):
+            return ExprStmt(expr=Call(func=Variable(name="newscreen"), args=[]))
+        if s.lower() in ("start screen", "startscreen"):
+            return ExprStmt(expr=Call(func=Variable(name="startscreen"), args=[]))
+        if s.lower() in ("stop screen", "stopscreen"):
+            return ExprStmt(expr=Call(func=Variable(name="stopscreen"), args=[]))
 
         # Pattern: <var> equals? -> expression statement (function call)
         # Fallback: treat as expression statement
@@ -582,6 +604,12 @@ class Parser:
             # empty means empty string or empty list depending on context? We'll treat as empty string for now.
             return Literal("")
 
+        # Natural language key read expressions
+        if ls == "listen for keys":
+            return Call(func=Variable(name="key_read_nonblocking"), args=[])
+        if ls == "wait on keys":
+            return Call(func=Variable(name="key_read"), args=[])
+
         # Number literal (could be int or float)
         try:
             if "." in s:
@@ -595,7 +623,7 @@ class Parser:
         if s.startswith('"') and s.endswith('"'):
             quote_count = s.count('"')
             if quote_count == 2:
-                return Literal(s[1:-1])
+                return Literal(_ast.literal_eval(s))
 
         # Call function: call <func> with <args> OR just call <func>
         m = re.match(r"^call\s+(\w+)\s+with\s+(.+)$", s, re.I)
@@ -615,22 +643,25 @@ class Parser:
         if "," in s and not s.startswith('"'):
             # Check if this looks like a simple list (no operators like 'and', 'plus', etc.)
             # Simple heuristic: if it contains common operators, it's not a list
-            has_operator = any(
-                op in s.lower()
-                for op in [
-                    " and ",
-                    " or ",
-                    " plus ",
-                    " minus ",
-                    " times ",
-                    " divided ",
-                    " is ",
-                    " equals ",
-                    "+",
-                    "-",
-                    "*",
-                    "/",
-                ]
+            has_operator = (
+                any(
+                    op in s.lower()
+                    for op in [
+                        " and ",
+                        " or ",
+                        " plus ",
+                        " minus ",
+                        " times ",
+                        " divided ",
+                        " is ",
+                        " equals ",
+                        "+",
+                        "-",
+                        "*",
+                        "/",
+                    ]
+                )
+                or "(" in s  # function call — not a literal list/dict
             )
             # Also check if it looks like a dict (has "key": pattern with quoted keys)
             if ":" in s:
@@ -907,6 +938,15 @@ class Parser:
                 args = self._parse_expression_list(args_str)
             return Call(func=Variable(name=func_name.lower()), args=args)
 
+        # Boolean / null literals (must come before variable reference)
+        ls = s.lower()
+        if ls == "true":
+            return Literal(True)
+        if ls == "false":
+            return Literal(False)
+        if ls in ("null", "none", "nothing"):
+            return Literal(None)
+
         # Variable reference
         if re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", s):
             return Variable(name=s.lower())
@@ -925,7 +965,7 @@ class Parser:
             # Count quotes - should be exactly 2 (one pair)
             quote_count = s.count('"')
             if quote_count == 2:
-                return Literal(s[1:-1])
+                return Literal(_ast.literal_eval(s))
 
         # Boolean / null
         ls = s.lower()
@@ -1110,7 +1150,8 @@ class Parser:
         self.expect(TokenType.COLON)
         condition_str = " ".join(condition_tokens).strip()
         condition = self._parse_expression(condition_str)
-        then_body, else_branches, else_body = self._parse_block_body()
+        then_body, else_branches, else_body = self._parse_block_body("if")
+        self._expect_end("if")
         return If(
             condition=condition,
             then_body=then_body,
@@ -1119,7 +1160,7 @@ class Parser:
         )
 
     def _parse_block_body(
-        self,
+        self, expected_end: str | None = None
     ) -> tuple[list[Stmt], list[tuple[Expr, list[Stmt]]], list[Stmt] | None]:
         """Parse body of block, collecting elif and else."""
         body = []
@@ -1128,15 +1169,18 @@ class Parser:
         while not self.match(TokenType.EOF):
             # Check for block end keywords BEFORE calling parse_statement
             if self.match(TokenType.IDENT) and self.current.value.lower() == "end":
-                # handle end of block - consume the 'end' keyword and any following keyword (like 'if')
-                self.advance()  # consume 'end'
-                # Consume optional block type word (e.g., 'if', 'while', 'for')
-                if self.match(TokenType.IDENT):
-                    self.advance()
-                # Consume the DOT if present
-                if self.match(TokenType.DOT):
-                    self.advance()
-                break
+                next_tok = self.peek()
+                if expected_end:
+                    if (next_tok and next_tok.type == TokenType.DOT) or (
+                        next_tok
+                        and next_tok.type == TokenType.IDENT
+                        and next_tok.value.lower() == expected_end
+                    ):
+                        break
+                    if next_tok and next_tok.type == TokenType.IDENT:
+                        break  # another block ends; let caller handle
+                else:
+                    break  # generic mode: stop on any end.<...>
             # Check for else/else if - don't consume here, let the code after the loop handle it
             if self.match(TokenType.IDENT) and self.current.value.lower() == "else":
                 break
@@ -1164,14 +1208,14 @@ class Parser:
                 condition_str = " ".join(condition_tokens).strip()
                 condition = self._parse_expression(condition_str)
                 # Recursively parse the rest to get elif_then_body, more elif branches, and else
-                elif_then_body, more_elifs, else_body = self._parse_block_body()
+                elif_then_body, more_elifs, else_body = self._parse_block_body("if")
                 elif_branches.append((condition, elif_then_body))
                 # Add any additional elif branches
                 elif_branches.extend(more_elifs)
             else:
                 # else: - consume the colon
                 self.expect(TokenType.COLON)
-                else_body, _, _ = self._parse_block_body()  # body until end
+                else_body, _, _ = self._parse_block_body("if")  # body until end
         return body, elif_branches, else_body
 
     def parse_while(self) -> While:
@@ -1202,22 +1246,27 @@ class Parser:
         condition_str = " ".join(condition_tokens).strip()
         condition = self._parse_expression(condition_str)
         body = []
-        while not self._is_block_end():
+        while not self._is_block_end("while"):
             body.append(self.parse_statement())
         # Expect 'end while'
         self._expect_end("while")
         return While(condition=condition, body=body)
 
-    def _is_block_end(self) -> bool:
+    def _is_block_end(self, block_type: str | None = None) -> bool:
         if self.match(TokenType.IDENT) and self.current.value.lower() == "end":
             # Check if next token is a valid block type or just "end"
             next_tok = self.peek()
             if next_tok:
-                if next_tok.type == TokenType.IDENT:
-                    return True
-                # Also handle case where "end" is followed by DOT
-                if next_tok.type == TokenType.DOT:
-                    return True
+                if block_type:
+                    if next_tok.type == TokenType.DOT:
+                        return True
+                    if next_tok.type == TokenType.IDENT and next_tok.value.lower() == block_type:
+                        return True
+                else:
+                    if next_tok.type == TokenType.IDENT:
+                        return True
+                    if next_tok.type == TokenType.DOT:
+                        return True
         return False
 
     def _expect_end(self, block_type: str):
@@ -1227,7 +1276,7 @@ class Parser:
                 lineno=self.current.lineno if self.current else 0,
             )
         self.advance()
-        # Expect optional block type word
+        # Expect optional block type word, but only if it matches
         if self.match(TokenType.IDENT) and self.current.value.lower() == block_type:
             self.advance()
         self._consume_dot()
@@ -1361,10 +1410,86 @@ class Parser:
                     "Expected 'each' or variable name", lineno=lineno
                 )
         body = []
-        while not self._is_block_end():
+        while not self._is_block_end("for"):
             body.append(self.parse_statement())
         self._expect_end("for")
         return For(target=target, iterable=iterable, body=body)
+
+    def parse_match(self) -> Match:
+        lineno = self.current.lineno if self.current else 0
+        self.expect(TokenType.IDENT)  # consume 'match'
+        # Collect subject tokens until ':'
+        subject_tokens = []
+        while not self.match(TokenType.COLON) and not self.match(TokenType.EOF):
+            subject_tokens.append(self.current.value)
+            self.advance()
+        self.expect(TokenType.COLON)
+        subject_str = " ".join(subject_tokens).strip()
+        subject_expr = self._parse_expression(subject_str)
+
+        cases = []
+        otherwise_body = None
+
+        while not self.match(TokenType.EOF):
+            if not self.match(TokenType.IDENT):
+                raise DatarSyntaxError(
+                    "Expected 'when', 'otherwise', or 'end match'", lineno=self.current.lineno
+                )
+            val = self.current.value.lower()
+            if val == "end":
+                next_tok = self.peek()
+                if next_tok and next_tok.type == TokenType.IDENT and next_tok.value.lower() == "match":
+                    self.advance()  # consume 'end'
+                    self.advance()  # consume 'match'
+                    self._consume_dot()
+                elif next_tok and next_tok.type == TokenType.DOT:
+                    self.advance()  # consume 'end'
+                    self._consume_dot()
+                else:
+                    raise DatarSyntaxError("Expected 'end match'", lineno=self.current.lineno)
+                break
+            elif val == "when":
+                self.advance()  # consume 'when'
+                value_tokens = []
+                while not self.match(TokenType.COLON) and not self.match(TokenType.EOF):
+                    value_tokens.append(self.current.value)
+                    self.advance()
+                self.expect(TokenType.COLON)
+                value_str = " ".join(value_tokens).strip()
+                value_expr = self._parse_expression(value_str)
+                body = self._parse_match_case_body()
+                cases.append((value_expr, body))
+            elif val == "otherwise":
+                self.advance()  # consume 'otherwise'
+                if self.match(TokenType.COLON):
+                    self.advance()
+                otherwise_body = self._parse_match_case_body()
+            else:
+                raise DatarSyntaxError(
+                    f"Unexpected '{val}' in match block", lineno=self.current.lineno
+                )
+
+        return Match(subject=subject_expr, cases=cases, otherwise_body=otherwise_body)
+
+    def _parse_match_case_body(self) -> list[Stmt]:
+        """Parse statements until the next 'when', 'otherwise', or 'end match'."""
+        stmts = []
+        while not self.match(TokenType.EOF):
+            if self.match(TokenType.IDENT):
+                val = self.current.value.lower()
+                if val in ("when", "otherwise"):
+                    break
+                if val == "end":
+                    next_tok = self.peek()
+                    if next_tok and (
+                        (next_tok.type == TokenType.IDENT and next_tok.value.lower() == "match")
+                        or next_tok.type == TokenType.DOT
+                    ):
+                        break
+            stmt = self.parse_statement()
+            if stmt is not None:
+                stmts.append(stmt)
+        return stmts
 
     def parse_function_def(self) -> FunctionDef:
         # "Create a function called <name> that takes <params>:" OR
@@ -1427,7 +1552,7 @@ class Parser:
                     self.advance()
         self.expect(TokenType.COLON)
         body = []
-        while not self._is_block_end():
+        while not self._is_block_end("function"):
             body.append(self.parse_statement())
         self._expect_end("function")
         return FunctionDef(name=name, params=params, defaults=defaults, body=body)

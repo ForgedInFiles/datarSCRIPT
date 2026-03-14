@@ -49,6 +49,43 @@ class Environment:
         return key in self._store or (self.parent is not None and self.parent._has(key))
 
 
+KEY_CONSTANTS = {
+    # Basic keys
+    "space": " ",
+    "enter": "\r",
+    "newline": "\n",       # some terminals send \n for Enter
+    "escape": "\x1b",
+    "tab": "\t",
+    "backspace": "\x7f",   # DEL — standard on modern terminals
+    "backspace2": "\x08",  # BS  — older terminals / some configs
+    # Arrow keys (standard ANSI CSI sequences)
+    "uparrow": "\x1b[A",
+    "downarrow": "\x1b[B",
+    "rightarrow": "\x1b[C",
+    "leftarrow": "\x1b[D",
+    # Navigation keys
+    "home": "\x1b[H",
+    "end": "\x1b[F",
+    "pageup": "\x1b[5~",
+    "pagedown": "\x1b[6~",
+    "delete": "\x1b[3~",
+    "insert": "\x1b[2~",
+    # Function keys (xterm / most modern terminals)
+    "f1": "\x1bOP",
+    "f2": "\x1bOQ",
+    "f3": "\x1bOR",
+    "f4": "\x1bOS",
+    "f5": "\x1b[15~",
+    "f6": "\x1b[17~",
+    "f7": "\x1b[18~",
+    "f8": "\x1b[19~",
+    "f9": "\x1b[20~",
+    "f10": "\x1b[21~",
+    "f11": "\x1b[23~",
+    "f12": "\x1b[24~",
+}
+
+
 class Interpreter:
     def __init__(self):
         self.global_env = Environment()
@@ -56,6 +93,9 @@ class Interpreter:
         # Register builtins as global variables with special call handling
         # We'll store them separately; call node checks builtins first
         self._builtin_functions = self.builtins
+        # Named key constants available as variables in every script
+        for name, value in KEY_CONSTANTS.items():
+            self.global_env.set(name, value)
 
     def run(self, source: str) -> None:
         from .lexer import Lexer
@@ -159,6 +199,17 @@ class Interpreter:
             finally:
                 if stmt.finally_body:
                     self._exec(stmt.finally_body, env)
+        elif isinstance(stmt, Match):
+            subject_val = self._eval(stmt.subject, env)
+            matched = False
+            for case_expr, case_body in stmt.cases:
+                case_val = self._eval(case_expr, env)
+                if subject_val == case_val:
+                    self._exec(case_body, env)
+                    matched = True
+                    break
+            if not matched and stmt.otherwise_body:
+                self._exec(stmt.otherwise_body, env)
         elif isinstance(stmt, Break):
             raise BreakSignal()
         elif isinstance(stmt, Continue):
