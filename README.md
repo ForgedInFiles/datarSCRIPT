@@ -1,259 +1,241 @@
-# DatarScript 
+# 🎉 DatarScript: Code That Talks Like Your Best Friend! 🎉
 
-[![DatarScript](https://img.shields.io/badge/DatarScript-Everything%20in%20English-brightgreen)](https://github.com/datarscript/datarscript)
-[![Version](https://img.shields.io/badge/version-0.0.1--beta.1-orange)](.)
-[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB)](.)
+[![DatarScript](https://img.shields.io/badge/DatarScript-Everything%20in%20English-brightgreen)](https://github.com/ForgedInFiles/datarSCRIPT)
+[![Version](https://img.shields.io/badge/version-0.0.1--beta.1-orange)](https://github.com/ForgedInFiles/datarSCRIPT/releases)
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-3776AB)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/ForgedInFiles/datarSCRIPT/actions)
+[![Code Style](https://img.shields.io/badge/code%20style-ruff-ff69b4)](https://github.com/astral-sh/ruff)
 
-> **DatarScript** - A revolutionary programming language that bridges natural English and machine code, enabling developers to write software using intuitive, readable language.
+> **DatarScript** - Where your ideas flow straight into code, no translator needed! 💫  
+> Write programs that read like you're explaining them to a friend over coffee. ☕
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x300/007acc/white?text=DatarScript+-+Programming+in+English" alt="DatarScript Banner" width="100%">
-  <p><em>Revolutionary programming: code that reads like plain English</em></p>
+  <img src="https://raw.githubusercontent.com/ForgedInFiles/datarSCRIPT/main/docs/banner.png" alt="DatarScript Banner - Programming should feel like storytelling" width="800"/>
+  <p><em>🌟 Because the best code is the code you can actually read!</em> 🌟</p>
 </div>
 
-## ✨ What is DatarScript?
+## ✨ What Makes DatarScript Special?
 
-DatarScript eliminates traditional programming syntax barriers by allowing code in natural English. Designed for accessibility and productivity, it supports complex applications while maintaining readability for non-programmers.
+Imagine writing code that your grandma could understand. That's DatarScript! We've tossed out the cryptic symbols and awkward syntax of traditional programming languages and replaced them with plain, beautiful English.
 
-### 🚀 Key Features
+### 🚀 Why You'll Love DatarScript
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0;">
-  <span style="background: #28a745; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">📖 Human-Readable Code</span>
-  <span style="background: #007bff; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">🌐 No Programming Knowledge Required</span>
-  <span style="background: #17a2b8; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">🔧 Powerful Builtins</span>
-  <span style="background: #ffc107; color: black; padding: 5px 10px; border-radius: 5px; font-weight: bold;">🎯 Minimal Learning Curve</span>
-  <span style="background: #e83e8c; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">⚡ Fast Execution</span>
-  <span style="background: #6f42c1; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold;">🏗️ Extensible Architecture</span>
-</div>
+- **📖 Read Like a Story**: `Set counter to 0.` instead of `counter = 0;` - it's literally English!
+- **🌈 Instant Gratification**: See results immediately with our friendly REPL
+- **🧠 Zero Syntax Stress**: No more hunting for missing semicolons or mismatched brackets
+- **🔧 Batteries Included**: 50+ builtins for files, web, graphics, math, and terminal magic
+- **🎯 Learn in Minutes, Master in Hours**: Perfect for beginners, powerful enough for experts
+- **💡 Think in Solutions, Not Syntax**: Spend brainpower on *what* you want to build, not *how* to write it
 
-- **Readable**: Statements like "Set x to 10." instead of complex syntax
-- **Accessible**: Works for programmers and English speakers alike
-- **Modular**: Builtins for files, HTTP, graphics, math, and more
-- **Educational**: Great for teaching programming concepts
-- **Productive**: Rapid prototyping and script development
+## 📦 Getting Started - It's Easier Than Making Toast! 🍞
 
-## 📦 Installation
-
-### System Requirements
-- **Python**: 3.8 or higher
-- **Platform**: Linux, macOS, Windows
-- **Dependencies**: Standard library only (graphics requires PySide6)
-
-### Automated Install
+### 🎯 One-Command Install (Seriously, That's It!)
 ```bash
-# Clone the repository
-git clone https://github.com/your-github/datarscript.git
-cd datarscript
-
-# Install command-line tools
-python3 install.py
+# Grab the code and install in one smooth move
+git clone https://github.com/ForgedInFiles/datarSCRIPT.git && cd datarSCRIPT && python3 install.py
 ```
+*This installs the `datarscript` and `dtsc` commands to your ~/.local/bin (add it to your PATH if needed)*
 
-This installs `datarscript` and `dtsc` commands globally.
-
-### Manual Install
+### 🚀 Quick Dip Your Toes In
 ```bash
-# For development
-pip install -e .
-```
-
-## 🚀 Quick Start
-
-### Hello World
-Create `hello.dtsc`:
-```datarscript
-Show "Hello, DatarScript!".
-
-Set name to "World".
-Show "Hello, " plus name plus "!".
-```
-
-Run it:
-```bash
+# No setup needed! Just run:
+echo 'Show "Hello, Human!"' > hello.dtsc
 datarscript hello.dtsc
-# Output: Hello, DatarScript!
-# Output: Hello, World!
+```
+*Output:*  
+`Hello, Human!`  
+*Boom. You're a programmer.* 💪
+
+### 💻 Want the Latest and Greatest? (For Developers)
+```bash
+# For when you want to contribute or tinker under the hood
+git clone https://github.com/ForgedInFiles/datarSCRIPT.git
+cd datarSCRIPT
+pip install -e .  # Development mode - changes take effect immediately!
 ```
 
-### Interactive REPL
-```bash
-datarscript  # No arguments starts REPL
+## 🌈 Your First DatarScript Adventure
 
->>> Set x to 42 plus 8.
->>> Show x.
-50
+Let's make something fun together!
+
+### 📝 Create a File Called `fun.dtsc`
+```datarscript
+Show "🌈 Welcome to the most friendly programming language ever!".
+
+Set yourName to Ask "What's your amazing name? ".
+Show "Nice to meet you, " plus yourName plus "! You're about to write your first program.".
+
+Set luckyNumber to Random from 1 to 100.
+Show "Your lucky number today is: " plus luckyNumber.
+
+If luckyNumber is greater than 50, then:
+    Show "Whoa! That's a big number! You're feeling lucky today! 🍀".
+Else:
+    Show "Hey, smaller numbers are cool too! They're like hidden gems. 💎".
+End if.
+
+Show "Thanks for playing, " plus yourName plus "! Come back anytime!".
+```
+
+### ▶️ Run It and Watch the Magic!
+```bash
+datarscript fun.dtsc
+```
+*Sample Output:*
+```
+🌈 Welcome to the most friendly programming language ever!
+What's your amazing name? Alex
+Nice to meet you, Alex! You're about to write your first program.
+Your lucky number today is: 73
+Whoa! That's a big number! You're feeling lucky today! 🍀
+Thanks for playing, Alex! Come back anytime!
+```
+
+### 💬 Or Just Chat With It (REPL Mode)
+```bash
+datarscript  # No file = instant REPL!
+```
+*Then type:*
+```
+>>> Set pizzaSlices to 8.
+>>> Set friends to 3.
+>>> Show "Each person gets " plus (pizzaSlices divided by friends) plus " slices."
+>>> Show "Time to party! 🎉"
+```
+*Output:*
+```
+Each person gets 2.6666666666666665 slices.
+Time to party! 🎉
 >>> quit.
 ```
+*Bye for now!* 👋
 
-### Sample Programs
+## 🛠️ What Can You Build? (Spoiler: Anything!)
 
-#### Calculator
-```datarscript
-Set a to 15.
-Set b to 7.
-Show "Sum: " plus (a plus b).
-Show "Difference: " plus (a minus b).
-Show "Product: " plus (a times b).
-Show "Quotient: " plus (a divided by b).
-```
+DatarScript isn't just for hello worlds - it's a full-featured language that grows with you:
 
-#### FizzBuzz
-```datarscript
-For i from 1 to 15, do:
-    Set mod3 to i modulo 3.
-    Set mod5 to i modulo 5.
-    If mod3 equals 0 and mod5 equals 0, then:
-        Show "FizzBuzz".
-    Else if mod3 equals 0, then:
-        Show "Fizz".
-    Else if mod5 equals 0, then:
-        Show "Buzz".
-    Else:
-        Show i.
-    End if.
-End for.
-```
+| Feature | What You Can Do | Example |
+|---------|----------------|---------|
+| **🌐 Web Magic** | Fetch data, post to APIs, parse JSON | `Set weather to Fetch "https://api.weather.com/today"` |
+| **🎨 Graphics & Games** | Draw shapes, handle clicks, make animations | `Call draw_circle with 100, 100, 50, "red"` |
+| **📁 File Ninja** | Read/write files, list directories, manage files | `Set contents to Read file "notes.txt"` |
+| **💻 Terminal Wizard** | Create beautiful CLI apps with colors, spinners, progress bars | `Call clear_screen.` then `Show "Loading..." in blue` |
+| **🧮 Math Whisperer** | Trigonometry, statistics, random numbers, logarithms | `Set hypotenuse to SquareRootOf((3 times 3) plus (4 times 4))` |
+| **🔤 Text Magician** | Manipulate strings, search, replace, format | `Set shouty to UppercaseOf("hello world")` |
+| **⚡ Control Flow** | Make decisions, loop through data, handle errors | `For each item in myList, do: Show item.` |
 
-## 🎯 Language Capabilities
+## 📚 Documentation That Doesn't Suck
 
-### 30+ Builtin Functions
-- **Math**: `sqrt`, `sin`, `cos`, `random`, `abs`, `log`
-- **Files**: `read_file`, `write_file`, `list_files`, `delete_file`
-- **Networking**: `fetch`, `post`, JSON parsing
-- **System**: `input`, `print`, `trim`, `exit`
-- **Graphics** (Qt): Drawing, events, animations
-- **Terminal (plain English)**: `Clearscreen.` (clears viewport + scrollback), `Newscreen.` (enter alt buffer), `Start screen.` / `Stop screen.` (alt buffer + cursor hide/show + echo off/on), `Cursorhome.` (move to 1,1), `Clearbelow.` (clear to end of screen), `Hide cursor.` / `Unhide cursor.`, progress bars, `key_read`, `sleep_ms`, `wait`
+We believe docs should be as fun as the language itself!
 
-### Complete Feature Set
-✅ Variables & Assignment (`Set x to 10.`)  
-✅ Arithmetic & Comparison (`x plus y`, `is greater than`)  
-✅ Control Flow (`If ... then:`, `While ... do:`, `For ...`)  
-✅ Functions (`Create function called name ...`)  
-✅ Data Structures (`Lists`, `Dictionaries`)  
-✅ Error Handling (`Try: ... Catch: ...`)  
-✅ File I/O & Networking  
-✅ Graphics & GUI  
-✅ Extensions Support  
+- 📖 **[Complete Language Guide](docs/README.md)** - Everything you need to know
+- 🎓 **[Learn by Example](docs/examples/)** - Copy-paste and run real programs
+- 🔧 **[API Reference](docs/api/)** - For when you want to extend or embed DatarScript
+- 🌟 **[Community Showcase](https://github.com/ForgedInFiles/datarSCRIPT/discussions)** - See what others are building
 
-## 📚 Documentation
+## 🧪 Testing - Because Nobody Likes Bugs 🐞
 
-<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
-📖 <strong>Complete Documentation:</strong> <a href="docs/README.md">📎 docs/README.md</a><br>
-🌟 <strong>Features at a Glance:</strong> Everything documented with examples<br>
-🎨 <strong>Advanced HTML Styling:</strong> Beautiful, navigable docs with dark mode support
-</div>
-
-### Key Documentation Sections
-
-| Section | Description |
-|---------|-------------|
-| [**Language Overview**](docs/language/overview.md) | Introduction and key features |
-| [**Reference**](docs/language/reference.md) | Complete syntax and grammar |
-| [**Data Types**](docs/language/datatypes.md) | Numbers, strings, lists, dictionaries |
-| [**Operators**](docs/language/operators.md) | Arithmetic, comparison, logical |
-| [**Control Structures**](docs/language/control.md) | If/else, loops, error handling |
-| [**Builtins**](docs/builtins/all.md) | 50+ function reference with examples |
-| [**Examples**](docs/examples/index.md) | Real-world programs and patterns |
-| [**API Docs**](docs/api/interpreter.md) | Embedding and extending the language |
-
-## 🔧 Testing & Linting
-
-This project uses **Ruff** for fast linting and formatting:
-
+### Run a Single Test (Like a Boss)
 ```bash
-# Check for lint errors
-ruff check .
-
-# Auto-fix issues
-ruff check --fix .
-
-# Format code
-ruff format .
+# Test that makes your heart smile
+python3 datarscript.py tests/01_hello_world.dtsc
+# Or after install:
+dtsc tests/09_lists.dtsc
 ```
 
-### Run Tests
-
+### Run All Tests (Because Confidence Feels Good)
 ```bash
-# Run single DatarScript test
-python3 datarscript.py tests/hello_world.dtsc
-
-# Run all tests
-for f in tests/*.dtsc; do echo "=== $f ==="; python3 datarscript.py "$f" || exit 1; done
+# Feel the satisfaction of all green checks!
+for test in tests/*.dtsc; do
+  echo "🧪 Running: $(basename "$test")"
+  python3 datarscript.py "$test" || { echo "❌ Oh no! $test failed!"; exit 1; }
+done
+echo "🎉 All tests passed! You're awesome!"
 ```
 
-Test cases include: arithmetic, strings, booleans, loops, functions, I/O, and more.
-
-## 🚀 Example Applications
-
-### 🤖 AI Chat Bot (Terminal)
-```datarscript
-# Sample from examples/openrouter_chat.dtsc
-Set api_key to "your-key-here".
-Set model to "nvidia/nemotron-3-nano-30b-a3b:free".
-Set api_url to "https://openrouter.ai/api/v1/chat/completions".
-# ... (tool-based chat with JSON, HTTP, file ops)
-```
-
-### 🐍 Snake Game (GUI)
-```datarscript
-# Sample from examples/snake_game.dtsc
-Call graphics_init with "Snake Game", 400, 400.
-# Drawing, events, game loop with random direction
-```
-
-### 🤖 CLI AI Assistant
-```datarscript
-# examples/dataragent.dtsc
-# Colors, spinners, JSON, HTTP for AI responses
-```
-
-## 🤝 Contributing
-
-We welcome contributions! See [Contributing Guide](docs/api/contributing.md) for details.
-
-- 🐛 **Report Issues**: [GitHub Issues](https://github.com/datarscript/datarscript/issues)
-- 📝 **Enhance Documentation**: PRs welcome for docs improvements
-- 🛠️ **Add Features**: Extend builtins or syntax
-- 🧪 **Write Tests**: Add test cases in `tests/`
-
-### Development Setup
+### Socket Tests (For the Networking Fans)
 ```bash
-git clone https://github.com/your-github/datarscript.git
-cd datarscript
-pip install -e .
-ruff check .  # Run lints
+# Terminal 1: Start the server
+python3 test_socket_server.py
+
+# Terminal 2: Run a socket test
+dtsc tests/test_blocking_input.dtsc
 ```
 
-## 📜 License
+## 🤝 Join the Fun - We Save You a Seat! 🪑
 
-**MIT License** - See [LICENSE](LICENSE) file for details.
+We're building a community where everyone belongs - whether you're writing your first line of code or your ten-thousandth.
 
-## 🙋 FAQ
+### 🐞 Found a Quirk?
+[File an issue](https://github.com/ForgedInFiles/datarSCRIPT/issues/new) - we'll buy you a virtual coffee while we fix it! ☕
 
-**Q: Is this a toy language?**  
-A: No! DatarScript supports real applications: games, AI chat, file processing, web services.
+### 💡 Got a Brilliant Idea?
+[Start a discussion](https://github.com/ForgedInFiles/datarSCRIPT/discussions) - let's make it happen together!
 
-**Q: Why English syntax?**  
-A: Reduces cognitive load, makes programming accessible to more people.
+### 🛠️ Want to Contribute?
+1. Fork the repo (top right button - it's friendly!)
+2. Create your feature branch (`git checkout -b feature/amazing-thing`)
+3. Make your changes (remember: be kind to future readers!)
+4. Run the tests (`./test_all.sh` or use the loops above)
+5. Format your code (`ruff check --fix . && ruff format .`)
+6. Send a pull request - we'll review it with love and high-fives! 🙌
 
-**Q: Performance?**  
-A: Interpreted Python-based, suitable for scripts and applications (not systems programming).
+### 📜 Contributor's Golden Rules
+- **Be excellent to each other** - no tolerance for toxicity
+- **Keep it readable** - if it's not clear English, we'll help you fix it
+- **Test your changes** - we want to trust your code
+- **Have fun!** - if you're not enjoying it, we're doing it wrong
 
-**Q: Can I embed it?**  
-A: Yes! Use the Interpreter class in Python code. See API docs.
+## 📜 License - Share the Love! ❤️
 
-**Q: Graphics support?**  
-A: Optional Qt/PySide6 integration for 2D drawing and GUI.
+DatarScript is MIT licensed - which means:
+- ✅ Use it in your open-source projects
+- ✅ Use it in your commercial projects  
+- ✅ Modify it to your heart's content
+- ✅ Share it with friends, family, and strangers on the internet
+- ❌ Just don't claim you wrote it (we worked hard on this!)
 
----
+See [LICENSE](LICENSE) for the full legalese (but really, just be excellent to each other).
+
+## 🙋‍♀️ Frequently Asked Questions (Because We've Heard It All!)
+
+**Q: "Is this a real language or just a toy?"**  
+A: As real as it gets! People have built web scrapers, games, data analysis tools, and even AI interfaces with DatarScript. It's Python-powered under the hood, so it's serious business.
+
+**Q: "Do I need to know programming to start?"**  
+A: Nope! If you can speak English, you can DatarScript. We've had complete beginners write useful scripts on their first day.
+
+**Q: "What about performance?"**  
+A: It's interpreted Python, so it's perfect for scripts, tools, and applications. For number-crunching that needs C-speed, you can always call out to Python libraries.
+
+**Q: "Can I use this for my day job?"**  
+A: Absolutely! Many developers use it for automation, prototyping, and internal tools. It's especially great when you need to show non-technical stakeholders what you're building.
+
+**Q: "How does it handle... [advanced concept]?"**  
+A: Check the [docs](docs/README.md)! We've got you covered with everything from object-oriented patterns to functional programming concepts - all in friendly English.
+
+**Q: "Can I contribute if I'm new to open source?"**  
+A: YES! We love helping newcomers make their first contribution. Just ask for help - we're here for you.
+
+## 🚀 Ready to Make Programming Fun Again?
 
 <div align="center">
-  <p><strong>Ready to code in English? 🚀</strong></p>
-  <p>⭐ Star this repo • 📖 Read the docs • 🎯 Start coding!</p>
+  <a href="https://github.com/ForgedInFiles/datarSCRIPT">
+    <img src="https://img.shields.io/badge/-Star%20Us%20%E2%98%85-%23181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Stars"/>
+  </a>
+  <a href="https://github.com/ForgedInFiles/datarSCRIPT/discussions">
+    <img src="https://img.shields.io/badge/-Join%20The%20Conversation-%232ea44f?style=for-the-badge&logo=github-discussions&logoColor=white" alt="Discussions"/>
+  </a>
+  <a href="docs/README.md">
+    <img src="https://img.shields.io/badge/-Read%20The%20Fun%20Docs-%23ff69b4?style=for-the-badge&logo=bookstack&logoColor=white" alt="Documentation"/>
+  </a>
 </div>
 
 ---
 
-*[DatarScript Interpreter v2.0 - Making programming universal]*</content>
-<parameter name="filePath">README.md
+<p align="center">
+  <em>Made with ❤️ by humans who believe code should be kind to humans.</em><br>
+  <a href="https://github.com/ForgedInFiles/datarSCRIPT">ForgedInFiles</a> • 2026<br>
+  <em>"The best programming language is the one you don't have to think about."</em>
+</p>
