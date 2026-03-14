@@ -313,6 +313,8 @@ class Interpreter:
     def _apply_binary(self, op: str, left: Any, right: Any, lineno: int | None) -> Any:
         # Arithmetic
         if op == "plus":
+            if isinstance(left, list) and not isinstance(right, list):
+                return left + [right]
             if isinstance(left, tuple) or isinstance(right, tuple):
                 if not (isinstance(left, tuple) and isinstance(right, tuple)):
                     raise DatarTypeError(

@@ -18,10 +18,11 @@ DatarScript is a revolutionary programming language designed to bridge the gap b
 11. [Scope and Block Structure](#scope-and-block-structure)
 12. [Comments and Documentation](#comments-and-documentation)
 13. [Standard Library](#standard-library)
-14. [Implementation Guidelines](#implementation-guidelines)
-15. [Success Criteria](#success-criteria)
-16. [Example Programs](#example-programs)
-17. [Terminal Control (Plain English)](#terminal-control-plain-english)
+14. [HTTP and JSON](#http-and-json)
+15. [Terminal Control (Plain English)](#terminal-control-plain-english)
+16. [Implementation Guidelines](#implementation-guidelines)
+17. [Success Criteria](#success-criteria)
+18. [Example Programs](#example-programs)
 
 
 ## File Conventions and Execution
@@ -100,6 +101,20 @@ Create name as "John".       # String
 Make is_active equal to true. # Boolean
 Define numbers as 1, 2, 3.    # List
 ```
+
+#### Empty Initialization
+
+Any variable can be initialized to a typed empty value using the `empty` keyword:
+
+```
+Set counter to empty number.       # 0
+Set label to empty string.         # ""
+Set items to empty list.           # []
+Set point to empty tuple.          # ()
+Set config to empty dictionary.    # {}
+```
+
+All four assignment keywords work: `Set ... to`, `Create ... as`, `Make ... equal to`, `Define ... as`.
 
 #### Multiple Assignment
 ```
@@ -352,24 +367,81 @@ Show "Area is: " plus area.
 ```
 Set numbers to 1, 2, 3, 4, 5.
 Create names as "John", "Jane", "Doe".
-Make empty_list equal to.
+Set items to empty list.
 ```
 
-#### List Operations
+#### Adding and Removing Items
 ```
-Add 6 to numbers.
-Remove the first item from numbers.
+Add 6 to numbers.                        # append value to end
+Add "Alice" to names.                    # works with any type, including tuples
+Remove the first item from numbers.      # remove oldest (front) element
+Remove the last item from numbers.       # remove newest (back) element
+Remove 3 from numbers.                   # remove first occurrence of value
+```
+
+#### Accessing Items
+
+Item indexing is **1-based** (the first item is at index 1):
+
+```
+Set first to item at 1 in numbers.       # get item by literal index
+Set third to item at 3 in numbers.       # get third item
+Set n to item at i in numbers.           # get item by variable index
+Get the first item from numbers and store in head.
 Get the third item from numbers and store in third_number.
+```
+
+#### Length
+```
+Set count to call length with numbers.   # works on lists, tuples, and strings
+```
+
+#### Mutating Items
+```
 Set the second item in numbers to 10.
 ```
 
-#### List Methods
+### Tuples
+
+Tuples are immutable ordered collections. They are created with the `a tuple of` phrase and support indexing and length queries the same as lists.
+
+#### Creation
 ```
-Sort numbers in ascending order.
-Reverse numbers.
-Check if 3 is in numbers.
-Get the length of numbers and store in count.
-Clear numbers.
+Set point to a tuple of 10, 20.
+Create rgb as a tuple of 255, 128, 0.
+Make coords equal to a tuple of x, y.
+Define empty_point to empty tuple.
+```
+
+All four assignment keywords work: `Set ... to`, `Create ... as`, `Make ... equal to`, `Define ... as`.
+
+#### Accessing Tuple Elements
+
+Indexing is **1-based**, the same as lists:
+
+```
+Set x to item at 1 in point.
+Set y to item at 2 in point.
+Set n to item at i in point.             # variable index also works
+Set size to call length with point.
+```
+
+#### Lists of Tuples
+
+Build a tuple first, then add it to a list:
+
+```
+Set TailCoordinates to empty list.
+Set segment to a tuple of 10, 20.
+Add segment to TailCoordinates.          # appends tuple as a single element
+
+# Enumerate:
+Set size to call length with TailCoordinates.
+For i from 1 to size, do:
+    Set point to item at i in TailCoordinates.
+    Set x to item at 1 in point.
+    Set y to item at 2 in point.
+End for.
 ```
 
 ### Dictionaries
@@ -599,98 +671,143 @@ End function.
 
 ### String Functions
 
-#### String Manipulation
+#### Implemented Operations
 ```
-Set upper_name to convert name to uppercase.
-Set lower_name to convert name to lowercase.
-Set trimmed to trim whitespace from name.
-Set replaced to replace "John" with "Jane" in name.
+Set trimmed to trim whitespace from name.   # remove leading/trailing whitespace
+Set length to call length with name.        # works on strings, lists, and tuples
 ```
 
-#### String Information
+#### User Input
 ```
-Set length to get length of name.
-Set starts_with_j to check if name starts with "J".
-Set contains_ohn to check if name contains "ohn".
-Set index to find "John" in name.
-```
-
-### Math Functions
-
-#### Mathematical Operations
-```
-Set absolute to get absolute value of -5.
-Set rounded to round 3.14159 to 2 decimal places.
-Set max_value to get maximum of 5, 10, 15.
-Set min_value to get minimum of 5, 10, 15.
-```
-
-#### Random Numbers
-```
-Set random_number to generate random number between 1 and 100.
-Set random_choice to pick random item from collection.
-```
-
-### User Input Functions
-
-#### Reading User Input
-```
-# Basic user input
 Ask for "What is your name?" and store in user_name.
-Ask for "How old are you?" and store in age.
-
-# Using input in calculations
-Ask for "Enter first number:" and store in num1.
-Ask for "Enter second number:" and store in num2.
+Ask for "Enter a number:" and store in num.
 Set sum to num1 plus num2.
 Show "Sum: " plus sum.
 ```
 
-#### Input Syntax
-- `Ask for "prompt message" and store in variable_name.`
 - Prompts must be enclosed in double quotes
 - Variable receives the user's input as a string
-- Input is read from stdin (keyboard input)
 
-### Terminal and Console Functions
-These functions control the terminal/console output and input.
+### Math Functions
 
-| Function | Description |
-|----------|-------------|
-| `key_read()` | Reads a single key press and returns it as a string. |
-| `clear_screen()` | Clears the entire screen and returns cursor to home position (1,1). |
-| `sleep_ms(ms)` | Sleeps for specified milliseconds. |
-| `wait(ms)` | Alias for `sleep_ms`. Waits for specified milliseconds. |
-| `ansi_color(color)` | Returns ANSI color code by name. |
-| `ansi_reset()` | Resets all ANSI formatting. |
-| `cursor_hide()` | Hides cursor. |
-| `cursor_show()` | Shows cursor. |
-| `cursor_up(lines)` | Moves cursor up N lines. |
-| `cursor_down(lines)` | Moves cursor down N lines. |
-| `cursor_right(cols)` | Moves cursor right N columns. |
-| `cursor_left(cols)` | Moves cursor left N columns. |
-| `cursor_goto(row, col)` | Moves cursor to specific row and column (1-based). |
-| `clear_line()` | Clears current line. |
-| `clear_to_end()` | Clears from cursor to end of line. |
-| `print_raw(text)` | Prints text without adding newline. |
-| `flush_output()` | Flushes stdout. |
-| `get_terminal_size()` | Gets terminal size as {width, height}. |
-| `is_tty()` | Checks if stdout is a TTY. |
+| Call syntax | Description |
+|-------------|-------------|
+| `call abs with n` | Absolute value |
+| `call round with n` | Round to nearest integer |
+| `call sqrt with n` | Square root |
+| `call pow with base, exp` | Raise base to exponent |
+| `call max with a, b` | Larger of two values |
+| `call min with a, b` | Smaller of two values |
+| `call sin with n` | Sine (radians) |
+| `call cos with n` | Cosine (radians) |
+| `call tan with n` | Tangent (radians) |
+| `call log with n` | Natural logarithm |
+
+#### Random Numbers
+```
+Set n to generate a random number between 1 and 100.
+Set n to generate a random value between 1 and 100.
+Set n to pick a random integer between 1 and 100.
+Set n to roll a random number from 1 to 100.
+Set item to call choice with my_list.       # pick random item from list
+```
+
+### List and Sequence Functions
+
+| Call syntax | Description |
+|-------------|-------------|
+| `call length with x` | Length of list, tuple, or string |
+| `call get_item with list, index` | Get item at 0-based index |
+| `call slice with list, start, end` | Slice list (0-based, exclusive end) |
 
 ### Date and Time Functions
 
-#### Current Time
+| Call syntax | Description |
+|-------------|-------------|
+| `call current_time_ms` | Current time as milliseconds since epoch |
+
+### Terminal and Console Functions
+
+These functions can be called directly via `call` or through the natural-language statement aliases listed in [Terminal Control (Plain English)](#terminal-control-plain-english).
+
+| Function | Description |
+|----------|-------------|
+| `key_read()` | Block until a key is pressed; returns key string. |
+| `key_read_nonblocking()` | Return current key if pressed, else `nothing`. Natural-language alias: `listen for keys` / `wait on keys`. |
+| `clear_screen()` | Clear screen and move cursor to home. |
+| `sleep_ms(ms)` | Sleep for N milliseconds. Natural-language alias: `Wait(ms).` |
+| `ansi_color(name)` | Return ANSI color escape code by name. |
+| `ansi_reset()` | Reset all ANSI formatting. |
+| `cursor_hide()` | Hide the cursor. |
+| `cursor_show()` | Show the cursor. |
+| `cursor_up(n)` | Move cursor up N lines. |
+| `cursor_down(n)` | Move cursor down N lines. |
+| `cursor_right(n)` | Move cursor right N columns. |
+| `cursor_left(n)` | Move cursor left N columns. |
+| `cursor_goto(row, col)` | Move cursor to row, column (1-based). |
+| `clear_line()` | Clear the current line. |
+| `clear_to_end()` | Clear from cursor to end of line. |
+| `print_raw(text)` | Print text without a trailing newline. |
+| `flush_output()` | Flush stdout. |
+| `get_terminal_size()` | Returns `{width, height}` dictionary. |
+| `is_tty()` | Returns true if stdout is a TTY. |
+
+## HTTP and JSON
+
+### Making HTTP Requests
 ```
-Set current_time to get current time.
-Set current_date to get current date.
-Set timestamp to get current timestamp.
+Set response to call fetch with "https://api.example.com/data".
+Set response to call post with "https://api.example.com/submit", body.
 ```
 
-#### Date Manipulation
+### JSON
 ```
-Set tomorrow to add 1 day to current_date.
-Set next_week to add 7 days to current_date.
-Set formatted to format date as "YYYY-MM-DD".
+Set obj to call json_parse with json_string.      # parse JSON string to dict
+Set value to call json_get with obj, "key".       # get value from parsed JSON
+Set json_str to call json_stringify with obj.     # convert dict to JSON string
+```
+
+### Headers
+```
+Set headers to call create_headers.
+Call header_set with headers, "Authorization", "Bearer token123".
+```
+
+## Terminal Control (Plain English)
+
+For full-screen terminal apps, keep everything in natural language. All statements end with a period.
+
+| Statement | Effect |
+|-----------|--------|
+| `Start screen.` | Enter alternate screen buffer, hide cursor, disable echo/canonical input, clear once. |
+| `Stop screen.` | Leave alternate buffer, show cursor, restore terminal settings. Also runs on interpreter exit. |
+| `Clearscreen.` | Clear viewport and scrollback, move cursor to home (1,1). |
+| `Newscreen.` | Enter alternate buffer without changing echo/cursor state. |
+| `Cursorhome.` | Move cursor to row 1, column 1. |
+| `Clearbelow.` | Clear from cursor to end of screen. |
+| `Hide cursor.` | Hide the cursor. |
+| `Unhide cursor.` | Show the cursor. |
+| `Wait(ms).` | Sleep for the given number of milliseconds. |
+| `Set key to listen for keys.` | Non-blocking key read; returns key string or `nothing`. |
+| `Set key to wait on keys.` | Blocking key read; waits until a key is pressed. |
+
+#### Special Key Names
+
+Arrow keys and function keys are matched by name in `Match` blocks:
+
+```
+Match key:
+    When LeftArrow:
+        # left arrow pressed
+    When RightArrow:
+        # right arrow pressed
+    When UpArrow:
+        # up arrow pressed
+    When DownArrow:
+        # down arrow pressed
+    When "q":
+        # q key pressed
+End match.
 ```
 
 ## Implementation Guidelines
@@ -868,24 +985,11 @@ Set result to call process_file with "input.txt" and "output.txt".
 Show result.
 ```
 
-## Terminal Control (Plain English)
-
-For full-screen terminal apps, keep everything in natural language:
-
-- `Start screen.` — enter the alternate screen buffer, hide the cursor, disable echo/canonical input, and clear once.
-- `Stop screen.` — leave the alternate buffer, show the cursor, and restore terminal settings (also runs on interpreter exit).
-- `Clearscreen.` — clear the viewport and scrollback, then move the cursor home.
-- `Newscreen.` — enter the alternate buffer without changing echo/cursor state.
-- `Cursorhome.` — move the cursor to row 1, column 1.
-- `Clearbelow.` — clear from the cursor to the end of the screen.
-- `Hide cursor.` / `Unhide cursor.` — explicit cursor control (automatically restored on exit).
-
 ## Future Enhancements
 
 ### Advanced Features
 - **Object-Oriented Programming**: Classes and inheritance
 - **Concurrency**: Parallel processing and threading
-- **Networking**: HTTP requests and socket programming
 - **Database Integration**: SQL and NoSQL database support
 - **Web Development**: HTML generation and web frameworks
 - **GUI Development**: Desktop application interfaces

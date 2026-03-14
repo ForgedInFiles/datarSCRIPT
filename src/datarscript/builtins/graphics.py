@@ -121,11 +121,29 @@ def rgb_color(r: int, g: int, b: int) -> str:
 
 
 @BuiltinRegistry.register("length")
-def length(lst: list) -> int:
-    """Get the length of a list."""
-    if not isinstance(lst, list):
-        raise DatarError("length: argument must be a list")
+def length(lst) -> int:
+    """Get the length of a list, tuple, or string."""
+    if not isinstance(lst, (list, tuple, str)):
+        raise DatarError("length: argument must be a list, tuple, or string")
     return len(lst)
+
+
+@BuiltinRegistry.register("builtin_remove_last")
+def builtin_remove_last(lst: list) -> None:
+    """Remove the last item from a list in-place."""
+    if not isinstance(lst, list):
+        raise DatarError("remove last: argument must be a list")
+    if lst:
+        lst.pop()
+
+
+@BuiltinRegistry.register("builtin_remove_first")
+def builtin_remove_first(lst: list) -> None:
+    """Remove the first item from a list in-place."""
+    if not isinstance(lst, list):
+        raise DatarError("remove first: argument must be a list")
+    if lst:
+        lst.pop(0)
 
 
 @BuiltinRegistry.register("get_item")

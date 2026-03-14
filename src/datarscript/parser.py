@@ -220,6 +220,27 @@ class Parser:
         s = stmt.strip()
 
         # ═══════════════════════════════════════════════════════════════════════════════
+        # EMPTY VALUE PATTERNS - "Set X to empty list." etc.
+        # ═══════════════════════════════════════════════════════════════════════════════
+
+        _EMPTY_KEYWORD = r"(?:set\s+(\w+)\s+to|create\s+(\w+)\s+as|make\s+(\w+)\s+equal\s+to|define\s+(\w+)\s+as)"
+        m = re.match(rf"^{_EMPTY_KEYWORD}\s+empty\s+(number|string|list|tuple|dictionary|dict)\s*$", s, re.I)
+        if m:
+            var = next(g for g in m.groups()[:4] if g is not None).lower()
+            kind = m.group(5).lower()
+            if kind == "number":
+                val = Literal(0)
+            elif kind == "string":
+                val = Literal("")
+            elif kind == "list":
+                val = ListExpr(elements=[])
+            elif kind == "tuple":
+                val = TupleExpr(elements=[])
+            else:  # dictionary / dict
+                val = DictExpr(keys=[], values=[])
+            return Assign(target=var, value=val)
+
+        # ═══════════════════════════════════════════════════════════════════════════════
         # TUPLE PATTERNS - Must be checked FIRST before general patterns
         # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -517,11 +538,20 @@ class Parser:
                 value=Binary(left=Variable(name=var), op="minus", right=Literal(1)),
             )
 
+        # Pattern: Remove first item from <var>
+        m = re.match(r"^remove\s+the\s+first\s+item\s+from\s+(\w+)$", s, re.I)
+        if m:
+            var = m.group(1).lower()
+            return ExprStmt(
+                expr=Call(
+                    func=Variable(name="builtin_remove_first"), args=[Variable(name=var)]
+                )
+            )
+
         # Pattern: Remove last item from <var>
         m = re.match(r"^remove\s+the\s+last\s+item\s+from\s+(\w+)$", s, re.I)
         if m:
             var = m.group(1).lower()
-            # In Python: var = var[:-1]
             return ExprStmt(
                 expr=Call(
                     func=Variable(name="builtin_remove_last"), args=[Variable(name=var)]
@@ -1039,7 +1069,8 @@ class Parser:
             return ItemAt(index=Literal(idx), container=container)
         m = re.match(r"^item\s+at\s+(\w+)\s+in\s+(\w+)$", s, re.I)
         if m:
-            idx_var = Variable(name=m.group(1).lower())
+            # Subtract 1 to convert 1-based user index to 0-based, matching literal index behaviour
+            idx_var = Binary(left=Variable(name=m.group(1).lower()), op="minus", right=Literal(1))
             container = Variable(name=m.group(2).lower())
             return ItemAt(index=idx_var, container=container)
 
